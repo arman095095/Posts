@@ -1,0 +1,212 @@
+{
+  "pins" : [
+    {
+      "identity" : "abseil-cpp-swiftpm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/firebase/abseil-cpp-SwiftPM.git",
+      "state" : {
+        "revision" : "d302de612e3d57c6f4afaf087da18fba8eac72a7",
+        "version" : "0.20220203.1"
+      }
+    },
+    {
+      "identity" : "alertmanager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/AlertManager.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "1617722582cfabd8c6784c62a9da3de0fc797fab"
+      }
+    },
+    {
+      "identity" : "boringssl-swiftpm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/firebase/boringssl-SwiftPM.git",
+      "state" : {
+        "revision" : "79db6516894a932d0ddaff3b05b9da1e4f6c4069",
+        "version" : "0.9.0"
+      }
+    },
+    {
+      "identity" : "designsystem",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/DesignSystem.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "e6eea23e16f01b0548195d22cb352b1ffa5a6bc8"
+      }
+    },
+    {
+      "identity" : "firebase-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/firebase/firebase-ios-sdk.git",
+      "state" : {
+        "revision" : "111d8d6ad1a1afd6c8e9561d26e55ab1e74fcb42",
+        "version" : "8.15.0"
+      }
+    },
+    {
+      "identity" : "googleappmeasurement",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/GoogleAppMeasurement.git",
+      "state" : {
+        "revision" : "ef819db8c58657a6ca367322e73f3b6322afe0a2",
+        "version" : "8.15.0"
+      }
+    },
+    {
+      "identity" : "googledatatransport",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/GoogleDataTransport.git",
+      "state" : {
+        "revision" : "15ccdfd25ac55b9239b82809531ff26605e7556e",
+        "version" : "9.1.2"
+      }
+    },
+    {
+      "identity" : "googleutilities",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/GoogleUtilities.git",
+      "state" : {
+        "revision" : "f4abe56ce62a779e64b525eb133c8fc2a84bbc1f",
+        "version" : "7.7.1"
+      }
+    },
+    {
+      "identity" : "grpc-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/grpc/grpc-ios.git",
+      "state" : {
+        "revision" : "abd2d5a4347efa0454606a788678a5d8ec223738",
+        "version" : "1.44.0-grpc"
+      }
+    },
+    {
+      "identity" : "gtm-session-fetcher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/gtm-session-fetcher.git",
+      "state" : {
+        "revision" : "4e9bbf2808b8fee444e84a48f5f3c12641987d3e",
+        "version" : "1.7.2"
+      }
+    },
+    {
+      "identity" : "leveldb",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/firebase/leveldb.git",
+      "state" : {
+        "revision" : "0706abcc6b0bd9cedfbb015ba840e4a780b5159b",
+        "version" : "1.22.2"
+      }
+    },
+    {
+      "identity" : "managers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/Managers.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "ef94df44281a0a0da8cbb38b320e84cc0c61025d"
+      }
+    },
+    {
+      "identity" : "module",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/Module.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "c57df1fc282f9f03dce067ec527aa10fa4cefbb6"
+      }
+    },
+    {
+      "identity" : "nanopb",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/firebase/nanopb.git",
+      "state" : {
+        "revision" : "7ee9ef9f627d85cbe1b8c4f49a3ed26eed216c77",
+        "version" : "2.30908.0"
+      }
+    },
+    {
+      "identity" : "networkservices",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/NetworkServices.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "dda67a6515a5a2e652e36cd035bf89b3b41da019"
+      }
+    },
+    {
+      "identity" : "promises",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/promises.git",
+      "state" : {
+        "revision" : "46c1e6b5ac09d8f82c991061c659f67e573d425d",
+        "version" : "2.1.0"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
+      "state" : {
+        "revision" : "2e63d0061da449ad0ed130768d05dceb1496de44",
+        "version" : "5.12.5"
+      }
+    },
+    {
+      "identity" : "selection",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/Selection.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "d12fa0c7b6e3d84b55acdeab32bfb1be233f04a3"
+      }
+    },
+    {
+      "identity" : "swift-protobuf",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-protobuf.git",
+      "state" : {
+        "revision" : "e1499bc69b9040b29184f7f2996f7bab467c1639",
+        "version" : "1.19.0"
+      }
+    },
+    {
+      "identity" : "swiftdate",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/malcommac/SwiftDate.git",
+      "state" : {
+        "revision" : "ed308a5afb97a3874300b761dad6e9966269e3e7",
+        "version" : "5.1.0"
+      }
+    },
+    {
+      "identity" : "swiftentrykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/huri000/SwiftEntryKit.git",
+      "state" : {
+        "revision" : "5ad36cccf0c4b9fea32f4e9b17a8e38f07563ef0",
+        "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "swinject",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Swinject/Swinject.git",
+      "state" : {
+        "revision" : "f10b6e9ebff440f985c43008f7c2d097639fcb81",
+        "version" : "2.8.1"
+      }
+    },
+    {
+      "identity" : "utils",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/Utils.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "ff51de659ecf38fca40868ff3f6adc8a33f72901"
+      }
+    }
+  ],
+  "version" : 2
+}

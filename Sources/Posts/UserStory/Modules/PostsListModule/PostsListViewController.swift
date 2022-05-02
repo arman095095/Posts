@@ -1,0 +1,211 @@
+//
+//  PostsListViewController.swift
+//  
+//
+//  Created by Арман Чархчян on 02.05.2022.
+//  Copyright (c) 2022 ___ORGANIZATIONNAME___. All rights reserved.
+//
+
+import UIKit
+import DesignSystem
+
+struct PostCellViewModel: Hashable {
+    
+}
+
+protocol PostsListViewInput: AnyObject {
+    func setupInitialState()
+    func setLoad(on: Bool)
+    func setFooterLoad(on: Bool)
+}
+
+final class PostsListViewController: UIViewController {
+
+    var output: PostsListViewOutput?
+    private var tableView = UITableView()
+    private var dataSource: UITableViewDiffableDataSource<Sections, PostCellViewModel>!
+    private let refreshControl = UIRefreshControl()
+    private let footer = FooterView()
+    private let activityIndicator: CustomActivityIndicator = {
+        let view = CustomActivityIndicator()
+        view.strokeColor = UIColor.mainApp()
+        view.lineWidth = 3
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        output?.viewDidLoad()
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let output = output else { return }
+        let bottomHeight = output.tabBarHidden ? 0 : buttonBarHeight
+        let offsetY = tableView.contentOffset.y
+        let contentHeight = tableView.contentSize.height - tableView.frame.size.height + tableView.contentInset.bottom + bottomHeight
+        
+        if offsetY >= contentHeight/2 {
+            output.requestMorePosts()
+        }
+    }
+    
+}
+
+extension PostsListViewController: PostsListViewInput {
+    func setLoad(on: Bool) {
+        on ? activityIndicator.startLoading() : activityIndicator.completeLoading(success: true)
+    }
+    
+    func setFooterLoad(on: Bool) {
+        on ? footer.start() : footer.stop()
+    }
+    
+    func setupInitialState() {
+        setupNavigationBar()
+        setupTableView()
+        setupActivity()
+        setupDataSource()
+    }
+}
+
+private extension PostsListViewController {
+  
+    func setupNavigationBar() {
+        navigationItem.title = output?.title
+        navigationController?.navigationBar.barTintColor = .systemGray6
+        navigationController?.navigationBar.shadowImage = UIImage()
+    }
+    
+    func setupTableView() {
+        tableView = UITableView(frame: view.bounds)
+        view.addSubview(tableView)
+        tableView.allowsSelection = false
+        tableView.backgroundColor = .systemGray6
+        tableView.tableFooterView = footer
+        tableView.separatorStyle = .none
+        tableView.contentInset.bottom = 10
+        tableView.delegate = self
+        //tableView.register(PostCell.self, forCellReuseIdentifier: PostCell.cellID)
+        tableView.addSubview(refreshControl)
+        refreshControl.addTarget(self, action: #selector(loadPosts), for: .valueChanged)
+        refreshControl.tintColor = UIColor.mainApp()
+    }
+    
+    func setupActivity() {
+        tableView.addSubview(activityIndicator)
+        activityIndicator.topAnchor.constraint(equalTo: self.view.topAnchor, constant: UIScreen.main.bounds.height/2).isActive = true
+        activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        activityIndicator.constraint(equalTo: CGSize(width: 40, height: 40))
+    }
+    
+    func infoView() -> UIView {
+        guard let output = output else { return UIView() }
+        let view = EmptyHeaderView()
+        view.config(type: .emptyPosts,
+                    text: output.infoTitleText)
+        return view
+    }
+    
+    func postTitleView() -> UIView {
+        let postTitleView = ListsHeaderTitleView()
+        postTitleView.output = output as? ListsHeaderTitleViewOutput
+        return postTitleView
+    }
+    
+    @objc func loadPosts() {
+        output?.requestPosts()
+    }
+}
+
+private extension PostsListViewController {
+    enum Sections: Int {
+        case posts
+        case empty
+    }
+    
+    func setupDataSource() {
+        dataSource = UITableViewDiffableDataSource<Sections, PostCellViewModel>.init(tableView: tableView, cellProvider: { [weak self] (tableView, indexPath, post) -> UITableViewCell? in
+            guard let self = self else { return nil }
+            guard let section = Sections(rawValue: indexPath.section) else { return nil }
+            switch section {
+            case .posts:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell.cellID", for: indexPath) as! UITableViewCell
+                let cellModel = self.output?.post(at: indexPath)
+                //cell.delegate = self
+                //cell.config(model: cellModel)
+                return cell
+            case .empty:
+                return nil
+            }
+        })
+    }
+}
+
+private extension PostsListViewController {
+    func reloadData(posts: [PostCellViewModel]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Sections, PostCellViewModel>()
+        snapshot.appendSections([.posts,.empty])
+        snapshot.appendItems(posts, toSection: .posts)
+        self.dataSource.apply(snapshot, animatingDifferences: false)
+    }
+    
+    func reloadDataWithDeletedPost(post: PostCellViewModel) {
+        var snapshot = dataSource.snapshot()
+        snapshot.deleteItems([post])
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func reloadCell(post: PostCellViewModel) {
+        var snapshot = dataSource.snapshot()
+        snapshot.reloadItems([post])
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+//MARK: UITableViewDelegate
+extension PostsListViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let section = Sections(rawValue: indexPath.section),
+              let output = output else { fatalError() }
+        switch section {
+        case .posts:
+            return output.rowHeight(at: indexPath)
+        case .empty:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let section = Sections(rawValue: indexPath.section),
+              let output = output else { fatalError() }
+        switch section {
+        case .posts:
+            return output.rowHeight(at: indexPath)
+        case .empty:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let section = Sections(rawValue: section) else { fatalError() }
+        switch section {
+        case .posts:
+            return postTitleView()
+        case .empty:
+            return infoView()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let section = Sections(rawValue: section),
+              let output = output else { fatalError() }
+        switch section {
+        case .posts:
+            return output.postsTitleHeight
+        case .empty:
+            return output.infoTitleHeight
+        }
+    }
+}
