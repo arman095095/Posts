@@ -9,6 +9,7 @@
 import UIKit
 import DesignSystem
 import Managers
+import AlertManager
 
 protocol PostsListModuleOutput: AnyObject {
     
@@ -53,15 +54,21 @@ final class PostsListPresenter {
     private let router: PostsListRouterInput
     private let interactor: PostsListInteractorInput
     private let stringFactory: PostsListStringFactoryProtocol
+    private let alertManager: AlertManagerProtocol
+    private let frameCalculator: FrameCalculatorProtocol
     private let context: InputFlowContext
     private var posts: [PostCellViewModel]
     
     init(router: PostsListRouterInput,
          interactor: PostsListInteractorInput,
+         alertManager: AlertManagerProtocol,
+         frameCalculator: FrameCalculatorProtocol,
          context: InputFlowContext) {
         self.router = router
         self.interactor = interactor
         self.context = context
+        self.alertManager = alertManager
+        self.frameCalculator = frameCalculator
         self.posts = []
     }
 }
@@ -108,7 +115,6 @@ extension PostsListPresenter: PostsListViewOutput {
     
     func viewDidLoad() {
         view?.setupInitialState()
-        view?.setLoad(on: true)
         requestPosts()
     }
     
@@ -117,10 +123,11 @@ extension PostsListPresenter: PostsListViewOutput {
     }
     
     func rowHeight(at indexPath: IndexPath) -> CGFloat {
-        posts[indexPath.row].frame.height
+        posts[indexPath.row].frames?.height ?? 0
     }
     
     func requestPosts() {
+        view?.setLoad(on: true)
         switch context {
         case .allPosts:
             interactor.requestFirstPosts()
@@ -130,6 +137,7 @@ extension PostsListPresenter: PostsListViewOutput {
     }
     
     func requestMorePosts() {
+        view?.setFooterLoad(on: true)
         switch context {
         case .allPosts:
             interactor.requestNextPosts()
@@ -151,17 +159,80 @@ extension PostsListPresenter: ListsHeaderTitleViewOutput {
 }
 
 extension PostsListPresenter: PostsListInteractorOutput {
+
+    func successLoadedAllFirstPosts(_ posts: [PostModelProtocol]) {
+        handlePosts(models: posts) { cellViewModels in
+            self.posts = cellViewModels
+            view?.setLoad(on: false)
+        }
+    }
+    
+    func successLoadedAllNextPosts(_ posts: [PostModelProtocol]) {
+        handlePosts(models: posts) { cellViewModels in
+            self.posts.append(contentsOf: cellViewModels)
+            view?.setFooterLoad(on: false)
+        }
+    }
+    
+    func successLoadedUserFirstPosts(_ posts: [PostModelProtocol]) {
+        handlePosts(models: posts) { cellViewModels in
+            self.posts = cellViewModels
+            view?.setLoad(on: false)
+        }
+    }
+    
+    func successLoadedUserNextPosts(_ posts: [PostModelProtocol]) {
+        handlePosts(models: posts) { cellViewModels in
+            self.posts.append(contentsOf: cellViewModels)
+            self.view?.setFooterLoad(on: false)
+            self.view?.reloadData(posts: self.posts)
+        }
+    }
+    
+    func failureLoadAllFirstPosts(message: String) {
+        view?.setLoad(on: false)
+        alertManager.present(type: .error, title: message)
+    }
+    
+    func failureLoadAllNextPosts(message: String) {
+        view?.setFooterLoad(on: false)
+        alertManager.present(type: .error, title: message)
+    }
+    
+    func failureLoadUserFirstPosts(message: String) {
+        view?.setLoad(on: false)
+        alertManager.present(type: .error, title: message)
+    }
+    
+    func failureLoadUserNextPosts(message: String) {
+        view?.setFooterLoad(on: false)
+        alertManager.present(type: .error, title: message)
+    }
+    
     
 }
 
-extension PostsListPresenter: PostsListModuleInput {
-    
-}
+extension PostsListPresenter: PostsListModuleInput { }
 
 private extension PostsListPresenter {
     struct Constants {
         static let zero: CGFloat = 0
         static let infoTitleHeight: CGFloat = 250
         static let titleViewHeight: CGFloat = 60
+    }
+}
+
+private extension PostsListPresenter {
+    func handlePosts(models: [PostModelProtocol], completion: ([PostCellViewModel]) -> ()) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let cellModels: [PostCellViewModel] = models.map {
+                let cellViewModel = PostCellViewModel(model: $0)
+                let frames = self.framesCalculator.calculate(model: cellViewModel)
+                cellViewModel.frames = frames.visibleFrame
+                cellViewModel.realFrames = frames.realFrame
+                return cellViewModel
+            }
+            completion(cellModels)
+        }
     }
 }

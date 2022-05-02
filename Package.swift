@@ -24,7 +24,7 @@ private let localDependencies: [Package.Dependency] = [
 ]
 
 let isDev = true
-private let dependencies = isDev ? localDependencies : remoteDependencies
+private let dependencie = isDev ? localDependencies : remoteDependencies
 
 let package = Package(
     name: "Posts",
@@ -35,15 +35,7 @@ let package = Package(
             name: "Posts",
             targets: ["Posts"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/Swinject/Swinject.git", from: "2.8.0"),
-        .package(url: "https://github.com/arman095095/Managers.git", branch: "develop"),
-        .package(url: "https://github.com/arman095095/Module.git", branch: "develop"),
-        .package(url: "https://github.com/arman095095/DesignSystem.git", branch: "develop"),
-        .package(url: "https://github.com/arman095095/AlertManager.git", branch: "develop"),
-        .package(url: "https://github.com/arman095095/Selection.git", branch: "develop"),
-        .package(url: "https://github.com/arman095095/Utils.git", branch: "develop"),
-    ],
+    dependencies: dependencie,
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.

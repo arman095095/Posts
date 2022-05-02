@@ -8,16 +8,24 @@
 
 import UIKit
 import Module
+import Managers
+import AlertManager
 
 typealias PostsListModule = Module<PostsListModuleInput, PostsListModuleOutput>
 
 enum PostsListAssembly {
-    static func makeModule() -> PostsListModule {
+    static func makeModule(postManager: PostsManagerProtocol,
+                           alertManager: AlertManagerProtocol,
+                           context: InputFlowContext) -> PostsListModule {
         let view = PostsListViewController()
         let router = PostsListRouter()
-        let interactor = PostsListInteractor()
+        let interactor = PostsListInteractor(postsManager: postManager)
+        let frameCalculator = FrameCalculator()
         let presenter = PostsListPresenter(router: router,
-                                           interactor: interactor)
+                                           interactor: interactor,
+                                           alertManager: alertManager,
+                                           frameCalculator: frameCalculator,
+                                           context: context)
         view.output = presenter
         interactor.output = presenter
         presenter.view = view

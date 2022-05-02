@@ -9,21 +9,17 @@
 import UIKit
 import DesignSystem
 
-struct PostCellViewModel: Hashable {
-    
-}
-
 protocol PostsListViewInput: AnyObject {
     func setupInitialState()
     func setLoad(on: Bool)
     func setFooterLoad(on: Bool)
+    func reloadData(posts: [PostCellViewModel])
 }
 
 final class PostsListViewController: UIViewController {
 
     var output: PostsListViewOutput?
     private var tableView = UITableView()
-    private var dataSource: UITableViewDiffableDataSource<Sections, PostCellViewModel>!
     private let refreshControl = UIRefreshControl()
     private let footer = FooterView()
     private let activityIndicator: CustomActivityIndicator = {
@@ -33,6 +29,7 @@ final class PostsListViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private var dataSource: UITableViewDiffableDataSource<Sections, PostCellViewModel>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,19 +50,33 @@ final class PostsListViewController: UIViewController {
 }
 
 extension PostsListViewController: PostsListViewInput {
-    func setLoad(on: Bool) {
-        on ? activityIndicator.startLoading() : activityIndicator.completeLoading(success: true)
-    }
-    
-    func setFooterLoad(on: Bool) {
-        on ? footer.start() : footer.stop()
-    }
     
     func setupInitialState() {
         setupNavigationBar()
         setupTableView()
         setupActivity()
         setupDataSource()
+    }
+    
+    func setLoad(on: Bool) {
+        DispatchQueue.main.async {
+            on ? self.activityIndicator.startLoading() : self.activityIndicator.completeLoading(success: true)
+        }
+    }
+    
+    func setFooterLoad(on: Bool) {
+        DispatchQueue.main.async {
+            on ? self.footer.start() : self.footer.stop()
+        }
+    }
+    
+    func reloadData(posts: [PostCellViewModel]) {
+        DispatchQueue.main.async {
+            var snapshot = NSDiffableDataSourceSnapshot<Sections, PostCellViewModel>()
+            snapshot.appendSections([.posts,.empty])
+            snapshot.appendItems(posts, toSection: .posts)
+            self.dataSource.apply(snapshot, animatingDifferences: false)
+        }
     }
 }
 
@@ -130,10 +141,10 @@ private extension PostsListViewController {
             guard let section = Sections(rawValue: indexPath.section) else { return nil }
             switch section {
             case .posts:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell.cellID", for: indexPath) as! UITableViewCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell.cellID", for: indexPath) as! PostCell
                 let cellModel = self.output?.post(at: indexPath)
-                //cell.delegate = self
-                //cell.config(model: cellModel)
+                cell.output = self
+                cell.config(model: cellModel)
                 return cell
             case .empty:
                 return nil
@@ -143,12 +154,6 @@ private extension PostsListViewController {
 }
 
 private extension PostsListViewController {
-    func reloadData(posts: [PostCellViewModel]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Sections, PostCellViewModel>()
-        snapshot.appendSections([.posts,.empty])
-        snapshot.appendItems(posts, toSection: .posts)
-        self.dataSource.apply(snapshot, animatingDifferences: false)
-    }
     
     func reloadDataWithDeletedPost(post: PostCellViewModel) {
         var snapshot = dataSource.snapshot()

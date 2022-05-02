@@ -5,6 +5,63 @@
 //  Created by Arman Davidoff on 24.11.2020.
 //  Copyright © 2020 Arman Davidoff. All rights reserved.
 //
+
+/*
+//MARK: Help Calculate
+private extension MPost {
+    
+    func getTextHeightWithButtonFrame() -> (CGFloat,CGRect) {
+        if textContent == "" {
+            return (0,.zero)
+        }
+        let height = textContent.height(width: PostCellConstants.textWidth, font: PostCellConstants.postsTextFont)
+        if height > PostCellConstants.maxTextHeight {
+            let y = PostCellConstants.heightTopView + PostCellConstants.maxTextHeight
+            return (PostCellConstants.maxTextHeight,CGRect(x: PostCellConstants.contentInset, y: y, width: PostCellConstants.buttonWidth, height: PostCellConstants.buttonFont.lineHeight))
+        }
+        return (height,.zero)
+    }
+    
+    
+    func getPostImageSize(from size: CGSize?, textHeight: CGFloat, buttonHeight: CGFloat) -> CGSize {
+        let size = calculateFirstImageSize(from: size)
+        let totalHeight = PostCellConstants.totalHeight - textHeight - buttonHeight
+        if size.height > totalHeight  {
+            let height = totalHeight
+            let ratio = size.height/height
+            let width = size.width/ratio
+            return CGSize(width: width, height: height)
+        } else {
+            return size
+        }
+    }
+    
+    func calculateFirstImageSize(from size: CGSize?) -> CGSize {
+        guard let size = size else { return .zero }
+        if size.width > UIScreen.main.bounds.width - 2*PostCellConstants.cardViewSideInset {
+            let width = UIScreen.main.bounds.width - 2*PostCellConstants.cardViewSideInset
+            let ratio = size.width / width
+            let height = size.height / ratio
+            return CGSize(width: width, height: height)
+        } else {
+            return size
+        }
+    }
+    
+    func getPostImageOriginX(from size: CGSize) -> CGFloat {
+        if size.width < UIScreen.main.bounds.width - 2*PostCellConstants.cardViewSideInset {
+            return (UIScreen.main.bounds.width - size.width - 2*PostCellConstants.cardViewSideInset)/2
+        } else {
+            return 0
+        }
+    }
+    
+    func getPostImageOriginY(textHeight: CGFloat, buttonHeight: CGFloat) -> CGFloat {
+        return PostCellConstants.heightTopView + textHeight + buttonHeight + PostCellConstants.imageAndTextInset
+    }
+}
+
+
 /*
 import UIKit
 import RxCocoa

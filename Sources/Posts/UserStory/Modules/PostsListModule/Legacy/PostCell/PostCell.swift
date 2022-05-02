@@ -5,13 +5,17 @@
 //  Created by Arman Davidoff on 24.11.2020.
 //  Copyright © 2020 Arman Davidoff. All rights reserved.
 //
-/*
+
 import UIKit
 
-class PostCell: UITableViewCell {
+protocol PostCellOutput: AnyObject {
+    
+}
+
+final class PostCell: UITableViewCell {
     
     static let cellID = "PostCell"
-    weak var delegate: PostCellDelegate?
+    weak var output: PostCellOutput?
     
     //Первый слой
     private var cardView: UIView = {
@@ -310,4 +314,4 @@ private extension PostCell {
         likesCountLabel.trailingAnchor.constraint(equalTo: likesView.trailingAnchor).isActive = true
     }
 }
-*/
+
