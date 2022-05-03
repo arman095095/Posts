@@ -9,6 +9,7 @@ import Foundation
 
 
 struct PostsStringFactory: PostsListStringFactoryProtocol {
+    var createPostTitle: String = "Поделитесь, что у Вас нового"
     var allPostsTitle: String = "Все посты"
     var userPostsTitle: String = "Посты"
     var currentUserPostsTitle: String = "Ваши посты"

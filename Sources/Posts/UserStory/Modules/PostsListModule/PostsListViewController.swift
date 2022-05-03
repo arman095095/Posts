@@ -68,6 +68,7 @@ extension PostsListViewController: PostsListViewInput {
             } else {
                 self.activityIndicator.completeLoading(success: true)
                 self.activityIndicator.isHidden = true
+                if refreshControl.isRefreshing { refreshControl.endRefreshing() }
             }
         }
     }
@@ -140,6 +141,7 @@ private extension PostsListViewController {
     
     func postTitleView() -> UIView {
         let postTitleView = ListsHeaderTitleView()
+        postTitleView.setTitle(output?.createPostTitle ?? "")
         postTitleView.output = output as? ListsHeaderTitleViewOutput
         return postTitleView
     }

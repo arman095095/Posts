@@ -25,6 +25,7 @@ protocol PostsListViewOutput: AnyObject {
     var postsTitleHeight: CGFloat { get }
     var infoTitleHeight: CGFloat { get }
     var infoTitleText: String { get }
+    var createPostTitle: String { get }
     func viewDidLoad()
     func requestPosts()
     func requestMorePosts()
@@ -49,6 +50,7 @@ protocol PostsListStringFactoryProtocol {
     var mainEmptyTitle: String { get }
     var currentUserEmptyTitle: String { get }
     var userEmptyTitle: String { get }
+    var createPostTitle: String { get }
 }
 
 final class PostsListPresenter {
@@ -127,6 +129,10 @@ extension PostsListPresenter: PostsListViewOutput {
         case .allPosts:
             return stringFactory.allPostsTitle
         }
+    }
+    
+    var createPostTitle: String {
+        stringFactory.createPostTitle
     }
 
     var infoTitleText: String {
