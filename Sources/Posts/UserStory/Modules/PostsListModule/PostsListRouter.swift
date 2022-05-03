@@ -36,5 +36,6 @@ extension PostsListRouter: PostsListRouterInput {
     
     func openPostCreationModule() {
         let module = routeMap.postCreateModule()
+        transitionHandler?.navigationController?.pushViewController(module.view, animated: true)
     }
 }
