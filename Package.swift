@@ -25,7 +25,7 @@ private let localDependencies: [Package.Dependency] = [
     .package(path: "/Users/armancarhcan/Desktop/Workdir/Utils"),
 ]
 
-let isDev = true
+let isDev = false
 private let dependencie = isDev ? localDependencies : remoteDependencies
 
 let package = Package(
