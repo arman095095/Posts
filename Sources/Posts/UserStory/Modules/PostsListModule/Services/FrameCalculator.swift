@@ -16,49 +16,6 @@ protocol CellCalculatable: AnyObject {
     var textContent: String { get }
 }
 
-final class PostCellViewModel: CellCalculatable {
-    var userID: String
-    var likersIds: [String]
-    var date: Date
-    var owner: ProfileModelProtocol
-    var textContent: String
-    var id: String
-    var realFrames: Frames?
-    var frames: Frames?
-    var urlImage: String?
-    var imageSize: CGSize?
-    
-    init(model: PostModelProtocol) {
-        if let urlImage = model.urlImage,
-           let width = model.imageWidth,
-           let height = model.imageHeight {
-            self.imageSize = CGSize(width: width, height: height)
-            self.urlImage = urlImage
-        }
-        self.id = model.id
-        self.textContent = model.textContent
-        self.likersIds = model.likersIds
-        self.userID = model.userID
-        self.owner = model.owner
-        self.date = model.date
-    }
-    
-    func liked(by id: String) -> Bool {
-        likersIds.contains(id)
-    }
-}
-
-extension PostCellViewModel: Hashable {
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    static func == (lhs: PostCellViewModel, rhs: PostCellViewModel) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
 extension String {
     
     func height(width: CGFloat, font: UIFont) -> CGFloat {
@@ -87,6 +44,7 @@ protocol FrameCalculatorProtocol {
 }
 
 struct PostCellConstants {
+    static let zero: CGFloat  = 0
     static let userImageHeight: CGFloat = 47
     
     static let cardViewBottonInset: CGFloat = 11

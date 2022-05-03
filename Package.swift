@@ -4,6 +4,7 @@
 import PackageDescription
 
 private let remoteDependencies: [Package.Dependency] = [
+    .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
     .package(url: "https://github.com/Swinject/Swinject.git", from: "2.8.0"),
     .package(url: "https://github.com/arman095095/Managers.git", branch: "develop"),
     .package(url: "https://github.com/arman095095/Module.git", branch: "develop"),
@@ -14,6 +15,7 @@ private let remoteDependencies: [Package.Dependency] = [
 ]
 
 private let localDependencies: [Package.Dependency] = [
+    .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
     .package(url: "https://github.com/Swinject/Swinject.git", from: "2.8.0"),
     .package(path: "/Users/armancarhcan/Desktop/Workdir/Managers"),
     .package(path: "/Users/armancarhcan/Desktop/Workdir/Module"),
@@ -46,6 +48,7 @@ let package = Package(
                            .product(name: "AlertManager", package: "AlertManager"),
                            .product(name: "Selection", package: "Selection"),
                            .product(name: "Utils", package: "Utils"),
-                           .product(name: "Swinject", package: "Swinject")]),
+                           .product(name: "Swinject", package: "Swinject"),
+                           .product(name: "SDWebImage", package: "SDWebImage")]),
     ]
 )

@@ -28,7 +28,11 @@ protocol PostsListViewOutput: AnyObject {
     func viewDidLoad()
     func requestPosts()
     func requestMorePosts()
-    func post(at indexPath: IndexPath) -> PostCellViewModel
+    func post(at indexPath: IndexPath) -> PostCellViewModelProtocol
+    func reveal(at indexPath: IndexPath)
+    func likePost(at indexPath: IndexPath)
+    func presentMenu(at indexPath: IndexPath)
+    func openUserProfile(at indexPath: IndexPath)
     func rowHeight(at indexPath: IndexPath) -> CGFloat
 }
 
@@ -57,7 +61,7 @@ final class PostsListPresenter {
     private let alertManager: AlertManagerProtocol
     private let frameCalculator: FrameCalculatorProtocol
     private let context: InputFlowContext
-    private var posts: [PostCellViewModel]
+    private var viewModels: [PostCellViewModel]
     
     init(router: PostsListRouterInput,
          interactor: PostsListInteractorInput,
@@ -69,11 +73,36 @@ final class PostsListPresenter {
         self.context = context
         self.alertManager = alertManager
         self.frameCalculator = frameCalculator
-        self.posts = []
+        self.viewModels = []
     }
 }
 
 extension PostsListPresenter: PostsListViewOutput {
+
+    func reveal(at indexPath: IndexPath) {
+        let viewModel = viewModels[indexPath.row]
+        viewModel.showedFullText = true
+        view?.reloadData(post: viewModel)
+    }
+    
+    func likePost(at indexPath: IndexPath) {
+        let post = viewModels[indexPath.row]
+        post.likedByMe.toggle()
+        if post.likedByMe {
+            interactor.like(postID: post.id, ownerID: post.userID)
+        } else {
+            interactor.unlike(postID: post.id, ownerID: post.userID)
+        }
+    }
+    
+    func presentMenu(at indexPath: IndexPath) {
+        router.openMenuAlert(preserved: indexPath)
+    }
+    
+    func openUserProfile(at indexPath: IndexPath) {
+        
+    }
+    
     var postsTitleHeight: CGFloat {
         switch context {
         case .user:
@@ -84,7 +113,7 @@ extension PostsListPresenter: PostsListViewOutput {
     }
     
     var infoTitleHeight: CGFloat {
-        posts.isEmpty ? Constants.infoTitleHeight : Constants.zero
+        viewModels.isEmpty ? Constants.infoTitleHeight : Constants.zero
     }
 
     var title: String {
@@ -118,12 +147,12 @@ extension PostsListPresenter: PostsListViewOutput {
         requestPosts()
     }
     
-    func post(at indexPath: IndexPath) -> PostCellViewModel {
-        posts[indexPath.row]
+    func post(at indexPath: IndexPath) -> PostCellViewModelProtocol {
+        viewModels[indexPath.row]
     }
     
     func rowHeight(at indexPath: IndexPath) -> CGFloat {
-        posts[indexPath.row].frames?.height ?? 0
+        viewModels[indexPath.row].frames?.height ?? 0
     }
     
     func requestPosts() {
@@ -158,34 +187,46 @@ extension PostsListPresenter: ListsHeaderTitleViewOutput {
     }
 }
 
+extension PostsListPresenter: PostsListRouterOutput {
+    func delete(preserved: IndexPath) {
+        let model = viewModels.remove(at: preserved.row)
+        interactor.deletePost(postID: model.id)
+        view?.reloadData(with: model)
+    }
+}
+
 extension PostsListPresenter: PostsListInteractorOutput {
 
+    var currentPostCount: Int {
+        viewModels.count
+    }
+    
     func successLoadedAllFirstPosts(_ posts: [PostModelProtocol]) {
         handlePosts(models: posts) { cellViewModels in
-            self.posts = cellViewModels
+            self.viewModels = cellViewModels
             view?.setLoad(on: false)
         }
     }
     
     func successLoadedAllNextPosts(_ posts: [PostModelProtocol]) {
         handlePosts(models: posts) { cellViewModels in
-            self.posts.append(contentsOf: cellViewModels)
+            self.viewModels.append(contentsOf: cellViewModels)
             view?.setFooterLoad(on: false)
         }
     }
     
     func successLoadedUserFirstPosts(_ posts: [PostModelProtocol]) {
         handlePosts(models: posts) { cellViewModels in
-            self.posts = cellViewModels
+            self.viewModels = cellViewModels
             view?.setLoad(on: false)
         }
     }
     
     func successLoadedUserNextPosts(_ posts: [PostModelProtocol]) {
         handlePosts(models: posts) { cellViewModels in
-            self.posts.append(contentsOf: cellViewModels)
+            self.viewModels.append(contentsOf: cellViewModels)
             self.view?.setFooterLoad(on: false)
-            self.view?.reloadData(posts: self.posts)
+            self.view?.reloadData(posts: self.viewModels)
         }
     }
     
@@ -208,8 +249,6 @@ extension PostsListPresenter: PostsListInteractorOutput {
         view?.setFooterLoad(on: false)
         alertManager.present(type: .error, title: message)
     }
-    
-    
 }
 
 extension PostsListPresenter: PostsListModuleInput { }
@@ -223,16 +262,17 @@ private extension PostsListPresenter {
 }
 
 private extension PostsListPresenter {
-    func handlePosts(models: [PostModelProtocol], completion: ([PostCellViewModel]) -> ()) {
+    func handlePosts(models: [PostModelProtocol],
+                     completion: ([PostCellViewModel]) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
-            let cellModels: [PostCellViewModel] = models.map {
+            let viewModels: [PostCellViewModel] = models.map {
                 let cellViewModel = PostCellViewModel(model: $0)
-                let frames = self.framesCalculator.calculate(model: cellViewModel)
+                let frames = self.frameCalculator.calculate(model: cellViewModel)
                 cellViewModel.frames = frames.visibleFrame
                 cellViewModel.realFrames = frames.realFrame
                 return cellViewModel
             }
-            completion(cellModels)
+            completion(viewModels)
         }
     }
 }

@@ -14,6 +14,8 @@ protocol PostsListViewInput: AnyObject {
     func setLoad(on: Bool)
     func setFooterLoad(on: Bool)
     func reloadData(posts: [PostCellViewModel])
+    func reloadData(post: PostCellViewModel)
+    func reloadData(with deletedPost: PostCellViewModel)
 }
 
 final class PostsListViewController: UIViewController {
@@ -78,6 +80,18 @@ extension PostsListViewController: PostsListViewInput {
             self.dataSource.apply(snapshot, animatingDifferences: false)
         }
     }
+    
+    func reloadData(post: PostCellViewModel) {
+        var snapshot = dataSource.snapshot()
+        snapshot.reloadItems([post])
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func reloadData(with deletedPost: PostCellViewModel) {
+        var snapshot = dataSource.snapshot()
+        snapshot.deleteItems([deletedPost])
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
 }
 
 private extension PostsListViewController {
@@ -97,7 +111,7 @@ private extension PostsListViewController {
         tableView.separatorStyle = .none
         tableView.contentInset.bottom = 10
         tableView.delegate = self
-        //tableView.register(PostCell.self, forCellReuseIdentifier: PostCell.cellID)
+        tableView.register(PostCell.self, forCellReuseIdentifier: PostCell.cellID)
         tableView.addSubview(refreshControl)
         refreshControl.addTarget(self, action: #selector(loadPosts), for: .valueChanged)
         refreshControl.tintColor = UIColor.mainApp()
@@ -141,10 +155,10 @@ private extension PostsListViewController {
             guard let section = Sections(rawValue: indexPath.section) else { return nil }
             switch section {
             case .posts:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell.cellID", for: indexPath) as! PostCell
-                let cellModel = self.output?.post(at: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.cellID, for: indexPath) as! PostCell
+                guard let model = self.output?.post(at: indexPath) else { return nil }
                 cell.output = self
-                cell.config(model: cellModel)
+                cell.config(model: model)
                 return cell
             case .empty:
                 return nil
@@ -153,19 +167,69 @@ private extension PostsListViewController {
     }
 }
 
-private extension PostsListViewController {
-    
-    func reloadDataWithDeletedPost(post: PostCellViewModel) {
-        var snapshot = dataSource.snapshot()
-        snapshot.deleteItems([post])
-        dataSource.apply(snapshot, animatingDifferences: true)
+extension PostsListViewController: PostCellOutput {
+    func revealCell(_ cell: UITableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        output?.reveal(at: indexPath)
     }
     
-    func reloadCell(post: PostCellViewModel) {
-        var snapshot = dataSource.snapshot()
-        snapshot.reloadItems([post])
-        dataSource.apply(snapshot, animatingDifferences: true)
+    func likePost(_ cell: UITableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        output?.likePost(at: indexPath)
     }
+    
+    func presentMenu(_ cell: UITableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        output?.presentMenu(at: indexPath)
+    }
+    
+    func openUserProfile(_ cell: UITableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        output?.openUserProfile(at: indexPath)
+    }
+    
+    /*func likePost(cell: PostCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        postsViewModel.likePost(at: indexPath)
+    }
+    
+    func openUserProfile(cell: PostCell) {
+        if postsViewModel.allPosts {
+            let postOwner = postsViewModel.postOwner(at: tableView.indexPath(for: cell))
+            let vc = Builder.shared.profileVC(friend: postOwner, managers: postsViewModel.managers)
+            present(vc, animated: true)
+        } else if let _ = navigationController?.popViewController(animated: true) {
+            return
+        } else {
+            navigationController?.dismiss(animated: true)
+        }
+    }
+    
+    func reloadCell(cell: PostCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let post = postsViewModel.showFullText(at: indexPath)
+        reloadCell(post: post)
+    }
+    
+    func presentOwnerAlert(cell: PostCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let alert = UIAlertController(title: "Вы уверены?", message: "Хотите удалить этот пост?", preferredStyle: .actionSheet)
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        let okAction = UIAlertAction(title: "Удалить", style: .destructive, handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.deletePost(indexPath: indexPath)
+        })
+        alert.addAction(cancelAction)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func deletePost(indexPath: IndexPath) {
+        let post = postsViewModel.post(at: indexPath)
+        postsViewModel.deletePost(post: post)
+        reloadDataWithDeletedPost(post: post)
+        Alert.present(type: .success, title: "Пост удален")
+    }*/
 }
 
 //MARK: UITableViewDelegate

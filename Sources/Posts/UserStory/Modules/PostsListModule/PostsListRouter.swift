@@ -10,13 +10,25 @@ import UIKit
 
 protocol PostsListRouterInput: AnyObject {
     func openPostCreationModule()
+    func openMenuAlert(preserved: IndexPath)
+}
+
+protocol PostsListRouterOutput: AnyObject {
+    func delete(preserved: IndexPath)
 }
 
 final class PostsListRouter {
     weak var transitionHandler: UIViewController?
+    weak var output: PostsListRouterOutput?
 }
 
 extension PostsListRouter: PostsListRouterInput {
+    func openMenuAlert(preserved: IndexPath) {
+        transitionHandler?.showAlertDelete(acceptHandler: {
+            self.output?.delete(preserved: preserved)
+        }, denyHandler: { })
+    }
+    
     func openPostCreationModule() {
         //
     }

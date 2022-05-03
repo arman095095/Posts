@@ -15,14 +15,17 @@ protocol PostsListInteractorInput: AnyObject {
     func requestNextPosts(userID: String)
     func requestFirstPosts()
     func requestNextPosts()
+    func like(postID: String, ownerID: String)
+    func unlike(postID: String, ownerID: String)
+    func deletePost(postID: String)
 }
 
 protocol PostsListInteractorOutput: AnyObject {
+    var currentPostCount: Int { get }
     func successLoadedAllFirstPosts(_ posts: [PostModelProtocol])
     func successLoadedAllNextPosts(_ posts: [PostModelProtocol])
     func successLoadedUserFirstPosts(_ posts: [PostModelProtocol])
     func successLoadedUserNextPosts(_ posts: [PostModelProtocol])
-    
     func failureLoadAllFirstPosts(message: String)
     func failureLoadAllNextPosts(message: String)
     func failureLoadUserFirstPosts(message: String)
@@ -42,11 +45,20 @@ final class PostsListInteractor {
 
 extension PostsListInteractor: PostsListInteractorInput {
 
+    func deletePost(postID: String) {
+        postsManager.removePost(postID: postID)
+    }
+
+    func like(postID: String, ownerID: String) {
+        postsManager.like(postID: postID, ownerID: ownerID)
+    }
+    
+    func unlike(postID: String, ownerID: String) {
+        postsManager.unlike(postID: postID, ownerID: ownerID)
+    }
+
     func requestFirstPosts() {
-        guard !isExecuting else { return }
-        isExecuting = true
         postsManager.getAllFirstPosts { [weak self] result in
-            defer { self?.isExecuting = false }
             switch result {
             case .success(let posts):
                 self?.output?.successLoadedAllFirstPosts(posts)
@@ -57,7 +69,9 @@ extension PostsListInteractor: PostsListInteractorInput {
     }
 
     func requestNextPosts() {
-        guard !isExecuting else { return }
+        guard let output = output,
+              !isExecuting,
+              output.currentPostCount >= PostsManager.Limits.posts.rawValue else { return }
         isExecuting = true
         postsManager.getAllNextPosts { [weak self] result in
             defer { self?.isExecuting = false }
@@ -71,10 +85,7 @@ extension PostsListInteractor: PostsListInteractorInput {
     }
     
     func requestFirstPosts(userID: String) {
-        guard !isExecuting else { return }
-        isExecuting = true
         postsManager.getFirstPosts(for: userID) { [weak self] result in
-            defer { self?.isExecuting = false }
             switch result {
             case .success(let posts):
                 self?.output?.successLoadedUserFirstPosts(posts)
@@ -85,7 +96,9 @@ extension PostsListInteractor: PostsListInteractorInput {
     }
     
     func requestNextPosts(userID: String) {
-        guard !isExecuting else { return }
+        guard let output = output,
+              !isExecuting,
+              output.currentPostCount >= PostsManager.Limits.posts.rawValue else { return }
         isExecuting = true
         postsManager.getNextPosts(for: userID) { [weak self] result in
             defer { self?.isExecuting = false }

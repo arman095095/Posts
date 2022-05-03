@@ -1,36 +1,42 @@
 //
-//  PostCell.swift
-//  diffibleData
+//  File.swift
+//  
 //
-//  Created by Arman Davidoff on 24.11.2020.
-//  Copyright © 2020 Arman Davidoff. All rights reserved.
+//  Created by Арман Чархчян on 03.05.2022.
 //
 
+import Foundation
 import UIKit
+import SDWebImage
+import DesignSystem
 
 protocol PostCellOutput: AnyObject {
-    
+    func revealCell(_ cell: UITableViewCell)
+    func likePost(_ cell: UITableViewCell)
+    func presentMenu(_ cell: UITableViewCell)
+    func openUserProfile(_ cell: UITableViewCell)
 }
 
 final class PostCell: UITableViewCell {
     
     static let cellID = "PostCell"
     weak var output: PostCellOutput?
+    private var model: PostCellViewModelProtocol?
     
     //Первый слой
-    private var cardView: UIView = {
+    private let cardView: UIView = {
         var view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         return view
     }()
     //TopViews
-    private var topView: UIView = {
+    private let topView: UIView = {
         var view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private var personImage: UIImageView = {
+    private let personImage: UIImageView = {
         var view = UIImageView()
         view.layer.cornerRadius = PostCellConstants.userImageHeight/2
         view.isUserInteractionEnabled = true
@@ -38,21 +44,21 @@ final class PostCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private var nameLabel: UILabel = {
+    private let nameLabel: UILabel = {
         var view = UILabel()
         view.font = UIFont.systemFont(ofSize: 15)
         view.textColor = .link
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private var dateLabel: UILabel = {
+    private let dateLabel: UILabel = {
         var view = UILabel()
         view.textColor = UIColor.postGrey()
         view.font = UIFont.systemFont(ofSize: 13)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private var ownerButton: SmallButton = {
+    private let ownerButton: SmallButton = {
         let button = SmallButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "menu"), for: .normal)
@@ -62,19 +68,14 @@ final class PostCell: UITableViewCell {
     
     private var ownerButtonWidthConstreint: NSLayoutConstraint!
     private var bottonViewTopConstraint: NSLayoutConstraint!
-    private var postCellModel: PostCellModelType! {
-        didSet {
-            setup()
-        }
-    }
     
     //dynamic Views withoutConstreints
-    private var postsImageView: UIImageView = {
+    private let postsImageView: UIImageView = {
         var view = UIImageView()
         view.contentMode = .scaleToFill
         return view
     }()
-    private var postTextView: UITextView = {
+    private let postTextView: UITextView = {
         var view = UITextView()
         view.font = PostCellConstants.postsTextFont
         view.isScrollEnabled = false
@@ -85,7 +86,7 @@ final class PostCell: UITableViewCell {
         view.dataDetectorTypes = UIDataDetectorTypes.all
         return view
     }()
-    private var fullTextButton : UIButton = {
+    private let fullTextButton : UIButton = {
         var view = UIButton(type: UIButton.ButtonType.system)
         view.titleLabel?.font = PostCellConstants.buttonFont
         view.setTitle("показать полностью...", for: .normal)
@@ -102,18 +103,18 @@ final class PostCell: UITableViewCell {
         view.layer.masksToBounds = true
         return view
     }()
-    private var bottonView: UIView = {
+    private let bottonView: UIView = {
         var view = UIView()
         view.backgroundColor = .white
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private var likesView: UIView = {
+    private let likesView: UIView = {
         var view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private var likeButton: UIButton = {
+    private let likeButton: UIButton = {
         var view = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(weight: UIImage.SymbolWeight.medium)
         view.setImage(UIImage(systemName: "heart",withConfiguration: config), for: .normal)
@@ -121,7 +122,7 @@ final class PostCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private var likesCountLabel: UILabel = {
+    private let likesCountLabel: UILabel = {
         var view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = UIColor.postGrey()
@@ -133,16 +134,7 @@ final class PostCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
-        setupConstreintsForCard()
-        setupConstreintsForTopView()
-        setupConstreintsForIconImage()
-        setupConstreintsForOwnerButton()
-        setupConstreintsForNameLabel()
-        setupConstreintsForDateLabel()
-        setupConstreintsForOnlineImageView()
-        setupConstreintsForBottonView()
-        setupConstreintsForLikesView()
-        setupConstreintsForLikes()
+        setupConstraints()
         setupActions()
     }
     
@@ -159,45 +151,42 @@ final class PostCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func config(model: PostCellModelType) {
-        self.postCellModel = model
-    }
-    
-    private func setup() {
-        personImage.sd_setImage(with: postCellModel.userImageURL)
-        nameLabel.text = postCellModel.userName
-        dateLabel.text = postCellModel.postDate
-        ownerButtonWidthConstreint.constant = postCellModel.currentUserOwnerButtonWidth
-        postTextView.text = postCellModel.textContent
-        postsImageView.sd_setImage(with: postCellModel.postImageURL)
-        
-        postTextView.frame = postCellModel.textContentFrame
-        postsImageView.frame = postCellModel.postImageFrame
-        fullTextButton.frame = postCellModel.buttonFrame
-        onlineImageView.isHidden = !postCellModel.online
-        likesCountLabel.text = postCellModel.likesCount
-        likeButton.tintColor = postCellModel.liked ? .systemRed : UIColor.postGrey()
-        bottonViewTopConstraint.constant = postCellModel.postImageFrame.size == .zero ? -PostCellConstants.imageAndTextInset : 0
-        
+    func config(model: PostCellViewModelProtocol) {
+        guard let frames = model.frames else { return }
+        self.model = model
+        personImage.sd_setImage(with: model.ownerImageUrl)
+        nameLabel.text = model.userName
+        dateLabel.text = model.date
+        ownerButtonWidthConstreint.constant = model.ownerMenuButtonWidth
+        postTextView.text = model.textContent
+        postsImageView.sd_setImage(with: model.urlImage)
+        postTextView.frame = frames.textContentFrame
+        postsImageView.frame = frames.postImageFrame
+        fullTextButton.frame = frames.buttonFrame
+        onlineImageView.isHidden = !model.online
+        likesCountLabel.text = model.likesCount
+        likeButton.tintColor = model.likedByMe ? .systemRed : UIColor.postGrey()
+        bottonViewTopConstraint.constant = model.contentInset
         layoutIfNeeded()
     }
     
-    @objc private func showRealFrame() {
-        delegate?.reloadCell(cell: self)
+    @objc private func showFullTapped() {
+        output?.revealCell(self)
     }
     
-    @objc private func likePost() {
-        likeButton.tintColor = postCellModel.liked ? UIColor.postGrey() : .systemRed
-        likesCountLabel.text = postCellModel.likesCountAfterLike
-        delegate?.likePost(cell: self)
+    @objc private func likeTapped() {
+        guard let model = model else { return }
+        likeButton.tintColor = model.likedByMe ? UIColor.postGrey() : .systemRed
+        likesCountLabel.text = model.likesCountAfterLike
+        output?.likePost(self)
     }
     
-    @objc private func alertForOwner() {
-        delegate?.presentOwnerAlert(cell: self)
+    @objc private func menuButtonTapped() {
+        output?.presentMenu(self)
     }
     
-    @objc private func openProfile() {
-        delegate?.openUserProfile(cell: self)
+    @objc private func profileTapped() {
+        output?.openUserProfile(self)
     }
 }
 
@@ -215,14 +204,27 @@ private extension PostCell {
     }
     
     func setupActions() {
-        likeButton.addTarget(self, action: #selector(likePost), for: .touchUpInside)
-        fullTextButton.addTarget(self, action: #selector(showRealFrame), for: .touchUpInside)
-        ownerButton.addTarget(self, action: #selector(alertForOwner), for: .touchUpInside)
-        personImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openProfile)))
-        topView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openProfile)))
+        likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
+        fullTextButton.addTarget(self, action: #selector(showFullTapped), for: .touchUpInside)
+        ownerButton.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
+        personImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileTapped)))
+        topView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileTapped)))
     }
     
-    func setupConstreintsForCard() {
+    func setupConstraints() {
+        setupConstraintsForCard()
+        setupConstraintsForTopView()
+        setupConstraintsForIconImage()
+        setupConstraintsForOwnerButton()
+        setupConstraintsForNameLabel()
+        setupConstraintsForDateLabel()
+        setupConstraintsForOnlineImageView()
+        setupConstraintsForBottonView()
+        setupConstraintsForLikesView()
+        setupConstraintsForLikes()
+    }
+    
+    func setupConstraintsForCard() {
         self.contentView.addSubview(cardView)
         cardView.addSubview(postsImageView)
         cardView.addSubview(postTextView)
@@ -234,7 +236,7 @@ private extension PostCell {
     }
     
     //Constreints topView
-    func setupConstreintsForTopView() {
+    func setupConstraintsForTopView() {
         cardView.addSubview(topView)
         topView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor).isActive = true
         topView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor).isActive = true
@@ -242,7 +244,7 @@ private extension PostCell {
         topView.topAnchor.constraint(equalTo: cardView.topAnchor).isActive = true
     }
     
-    func setupConstreintsForIconImage() {
+    func setupConstraintsForIconImage() {
         topView.addSubview(personImage)
         personImage.heightAnchor.constraint(equalToConstant: PostCellConstants.userImageHeight).isActive = true
         personImage.widthAnchor.constraint(equalToConstant: PostCellConstants.userImageHeight).isActive = true
@@ -250,21 +252,21 @@ private extension PostCell {
         personImage.topAnchor.constraint(equalTo: topView.topAnchor, constant: 8).isActive = true
     }
     
-    func setupConstreintsForNameLabel() {
+    func setupConstraintsForNameLabel() {
         topView.addSubview(nameLabel)
         nameLabel.trailingAnchor.constraint(equalTo: ownerButton.leadingAnchor, constant: -PostCellConstants.contentInset).isActive = true
         nameLabel.leadingAnchor.constraint(equalTo: personImage.trailingAnchor, constant: 8).isActive = true
         nameLabel.topAnchor.constraint(equalTo: topView.topAnchor, constant: 14).isActive = true
     }
     
-    func setupConstreintsForDateLabel() {
+    func setupConstraintsForDateLabel() {
         topView.addSubview(dateLabel)
         dateLabel.trailingAnchor.constraint(equalTo: ownerButton.leadingAnchor, constant: -8).isActive = true
         dateLabel.leadingAnchor.constraint(equalTo: personImage.trailingAnchor, constant: 8).isActive = true
         dateLabel.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -14).isActive = true
     }
     
-    func setupConstreintsForOnlineImageView() {
+    func setupConstraintsForOnlineImageView() {
         topView.addSubview(onlineImageView)
         onlineImageView.heightAnchor.constraint(equalToConstant: 15).isActive = true
         onlineImageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
@@ -272,7 +274,7 @@ private extension PostCell {
         onlineImageView.trailingAnchor.constraint(equalTo: personImage.trailingAnchor, constant: 0).isActive = true
     }
     
-    func setupConstreintsForOwnerButton() {
+    func setupConstraintsForOwnerButton() {
         topView.addSubview(ownerButton)
         ownerButton.heightAnchor.constraint(equalToConstant: PostCellConstants.menuButtonHeight).isActive = true
         ownerButtonWidthConstreint = ownerButton.widthAnchor.constraint(equalToConstant: 0)
@@ -281,7 +283,7 @@ private extension PostCell {
         ownerButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -PostCellConstants.contentInset).isActive = true
     }
     
-    func setupConstreintsForBottonView() {
+    func setupConstraintsForBottonView() {
         cardView.addSubview(bottonView)
         
         bottonViewTopConstraint = bottonView.topAnchor.constraint(equalTo: postsImageView.bottomAnchor)
@@ -292,7 +294,7 @@ private extension PostCell {
         bottonView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor).isActive = true
     }
     
-    func setupConstreintsForLikesView() {
+    func setupConstraintsForLikesView() {
         bottonView.addSubview(likesView)
         likesView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         likesView.leadingAnchor.constraint(equalTo: bottonView.leadingAnchor, constant: PostCellConstants.contentInset - 2).isActive = true
@@ -300,10 +302,9 @@ private extension PostCell {
         likesView.bottomAnchor.constraint(equalTo: bottonView.bottomAnchor).isActive = true
     }
     
-    func setupConstreintsForLikes() {
+    func setupConstraintsForLikes() {
         likesView.addSubview(likeButton)
         likesView.addSubview(likesCountLabel)
-            //image.tintColor = .red
         likeButton.widthAnchor.constraint(equalToConstant: 26).isActive = true
         likeButton.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
@@ -314,4 +315,3 @@ private extension PostCell {
         likesCountLabel.trailingAnchor.constraint(equalTo: likesView.trailingAnchor).isActive = true
     }
 }
-
