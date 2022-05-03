@@ -70,16 +70,21 @@ extension PostCreatePresenter: PostCreateViewOutput {
     func viewDidLoad() {
         view?.setupInitialState(stringFactory: stringFactory)
         view?.setupInitialLayout()
+        view?.sendButtonEnabled(on: false)
     }
     
     func select(image: UIImage, with size: CGSize) {
         self.selectedImageInfo = (image, size)
         view?.successSelectedPhoto(photo: image, photo: size)
+        view?.sendButtonEnabled(on: true)
     }
     
     func removeSelectedImage() {
         self.selectedImageInfo = nil
         view?.setupInitialLayout()
+        let result = enteredText != ""
+        view?.sendButtonEnabled(on: result)
+        
     }
     
     func createPost(text: String?) {
