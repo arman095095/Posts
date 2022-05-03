@@ -10,7 +10,6 @@ import UIKit
 import Managers
 
 protocol PostsListInteractorInput: AnyObject {
-    var allowedLoadMore: Bool { get }
     func requestFirstPosts(userID: String)
     func requestNextPosts(userID: String)
     func requestFirstPosts()
@@ -21,7 +20,6 @@ protocol PostsListInteractorInput: AnyObject {
 }
 
 protocol PostsListInteractorOutput: AnyObject {
-    var currentPostCount: Int { get }
     func successLoadedAllFirstPosts(_ posts: [PostModelProtocol])
     func successLoadedAllNextPosts(_ posts: [PostModelProtocol])
     func successLoadedUserFirstPosts(_ posts: [PostModelProtocol])
@@ -36,16 +34,14 @@ final class PostsListInteractor {
     
     weak var output: PostsListInteractorOutput?
     private let postsManager: PostsManagerProtocol
-    var allowedLoadMore: Bool
     
     init(postsManager: PostsManagerProtocol) {
         self.postsManager = postsManager
-        self.allowedLoadMore = false
     }
 }
 
 extension PostsListInteractor: PostsListInteractorInput {
-
+    
     func deletePost(postID: String) {
         postsManager.removePost(postID: postID)
     }
@@ -60,7 +56,6 @@ extension PostsListInteractor: PostsListInteractorInput {
 
     func requestFirstPosts() {
         postsManager.getAllFirstPosts { [weak self] result in
-            defer { self?.allowedLoadMore = true }
             switch result {
             case .success(let posts):
                 self?.output?.successLoadedAllFirstPosts(posts)
@@ -71,12 +66,7 @@ extension PostsListInteractor: PostsListInteractorInput {
     }
 
     func requestNextPosts() {
-        guard let output = output,
-              allowedLoadMore,
-              output.currentPostCount >= PostsManager.Limits.posts.rawValue else { return }
-        allowedLoadMore = false
         postsManager.getAllNextPosts { [weak self] result in
-            defer { self?.allowedLoadMore = true }
             switch result {
             case .success(let posts):
                 self?.output?.successLoadedAllNextPosts(posts)
@@ -98,12 +88,7 @@ extension PostsListInteractor: PostsListInteractorInput {
     }
     
     func requestNextPosts(userID: String) {
-        guard let output = output,
-              allowedLoadMore,
-              output.currentPostCount >= PostsManager.Limits.posts.rawValue else { return }
-        allowedLoadMore = false
         postsManager.getNextPosts(for: userID) { [weak self] result in
-            defer { self?.allowedLoadMore = true }
             switch result {
             case .success(let posts):
                 self?.output?.successLoadedUserNextPosts(posts)

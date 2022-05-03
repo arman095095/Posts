@@ -64,6 +64,7 @@ final class PostsListPresenter {
     private let frameCalculator: FrameCalculatorProtocol
     private let context: InputFlowContext
     private var viewModels: [PostCellViewModel]
+    private var allowedNextPosts: Bool
     
     init(router: PostsListRouterInput,
          interactor: PostsListInteractorInput,
@@ -78,6 +79,7 @@ final class PostsListPresenter {
         self.alertManager = alertManager
         self.frameCalculator = frameCalculator
         self.viewModels = []
+        self.allowedNextPosts = false
     }
 }
 
@@ -174,7 +176,10 @@ extension PostsListPresenter: PostsListViewOutput {
     }
     
     func requestMorePosts() {
+        guard allowedNextPosts,
+              viewModels.count >= PostsManager.Limits.posts.rawValue else { return }
         view?.setFooterLoad(on: true)
+        allowedNextPosts = false
         switch context {
         case .allPosts:
             interactor.requestNextPosts()
@@ -205,16 +210,13 @@ extension PostsListPresenter: PostsListRouterOutput {
 
 extension PostsListPresenter: PostsListInteractorOutput {
 
-    var currentPostCount: Int {
-        viewModels.count
-    }
-    
     func successLoadedAllFirstPosts(_ posts: [PostModelProtocol]) {
         handlePosts(models: posts) { [weak self] cellViewModels in
             guard let self = self else { return }
             self.viewModels = cellViewModels
             self.view?.setLoad(on: false)
             self.view?.reloadData(posts: self.viewModels)
+            self.allowedNextPosts = true
         }
     }
     
@@ -224,6 +226,7 @@ extension PostsListPresenter: PostsListInteractorOutput {
             self.viewModels.append(contentsOf: cellViewModels)
             self.view?.setFooterLoad(on: false)
             self.view?.reloadData(posts: self.viewModels)
+            self.allowedNextPosts = true
         }
     }
     
@@ -233,6 +236,7 @@ extension PostsListPresenter: PostsListInteractorOutput {
             self.viewModels = cellViewModels
             self.view?.setLoad(on: false)
             self.view?.reloadData(posts: self.viewModels)
+            self.allowedNextPosts = true
         }
     }
     
@@ -242,6 +246,7 @@ extension PostsListPresenter: PostsListInteractorOutput {
             self.viewModels.append(contentsOf: cellViewModels)
             self.view?.setFooterLoad(on: false)
             self.view?.reloadData(posts: self.viewModels)
+            self.allowedNextPosts = true
         }
     }
     
@@ -253,6 +258,7 @@ extension PostsListPresenter: PostsListInteractorOutput {
     func failureLoadAllNextPosts(message: String) {
         view?.setFooterLoad(on: false)
         alertManager.present(type: .error, title: message)
+        self.allowedNextPosts = true
     }
     
     func failureLoadUserFirstPosts(message: String) {
@@ -263,6 +269,7 @@ extension PostsListPresenter: PostsListInteractorOutput {
     func failureLoadUserNextPosts(message: String) {
         view?.setFooterLoad(on: false)
         alertManager.present(type: .error, title: message)
+        self.allowedNextPosts = true
     }
 }
 
