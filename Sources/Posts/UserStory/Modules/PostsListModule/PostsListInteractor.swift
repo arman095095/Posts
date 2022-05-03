@@ -71,8 +71,8 @@ extension PostsListInteractor: PostsListInteractorInput {
 
     func requestNextPosts() {
         guard let output = output,
-              !isExecuting,
-              output.currentPostCount >= PostsManager.Limits.posts.rawValue else { return }
+              !isExecuting
+              /*output.currentPostCount >= PostsManager.Limits.posts.rawValue*/ else { return }
         isExecuting = true
         postsManager.getAllNextPosts { [weak self] result in
             defer { self?.isExecuting = false }
