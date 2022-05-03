@@ -9,7 +9,7 @@
 import UIKit
 import DesignSystem
 
-protocol PostsListViewInput: AnyObject {
+protocol PostsListViewInput: UIViewController {
     func setupInitialState()
     func setLoad(on: Bool)
     func setFooterLoad(on: Bool)
@@ -40,9 +40,7 @@ final class PostsListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        footer.stop()
-        PostCellConstants.topBarHeight = topBarHeight
-        PostCellConstants.bottonBarHeight = buttonBarHeight
+        output?.viewWillAppear()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

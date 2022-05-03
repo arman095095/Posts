@@ -27,6 +27,7 @@ protocol PostsListViewOutput: AnyObject {
     var infoTitleText: String { get }
     var createPostTitle: String { get }
     func viewDidLoad()
+    func viewWillAppear()
     func requestPosts()
     func requestMorePosts()
     func post(at indexPath: IndexPath) -> PostCellViewModelProtocol
@@ -156,6 +157,11 @@ extension PostsListPresenter: PostsListViewOutput {
         view?.setupInitialState()
         view?.setLoad(on: true)
         requestPosts()
+    }
+    
+    func viewWillAppear() {
+        PostCellConstants.topBarHeight = view?.topBarHeight
+        PostCellConstants.bottonBarHeight = view?.buttonBarHeight
     }
     
     func post(at indexPath: IndexPath) -> PostCellViewModelProtocol {
