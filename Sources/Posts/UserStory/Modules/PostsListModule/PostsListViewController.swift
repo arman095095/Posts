@@ -62,7 +62,13 @@ extension PostsListViewController: PostsListViewInput {
     
     func setLoad(on: Bool) {
         DispatchQueue.main.async {
-            on ? self.activityIndicator.startLoading() : self.activityIndicator.completeLoading(success: true)
+            if on {
+                self.activityIndicator.isHidden = false
+                self.activityIndicator.startLoading()
+            } else {
+                self.activityIndicator.completeLoading(success: true)
+                self.activityIndicator.isHidden = true
+            }
         }
     }
     

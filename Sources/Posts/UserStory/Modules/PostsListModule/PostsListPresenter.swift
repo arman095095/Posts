@@ -208,6 +208,7 @@ extension PostsListPresenter: PostsListInteractorOutput {
             guard let self = self else { return }
             self.viewModels = cellViewModels
             self.view?.setLoad(on: false)
+            self.view?.reloadData(posts: self.viewModels)
         }
     }
     
@@ -216,6 +217,7 @@ extension PostsListPresenter: PostsListInteractorOutput {
             guard let self = self else { return }
             self.viewModels.append(contentsOf: cellViewModels)
             self.view?.setFooterLoad(on: false)
+            self.view?.reloadData(posts: self.viewModels)
         }
     }
     
@@ -224,6 +226,7 @@ extension PostsListPresenter: PostsListInteractorOutput {
             guard let self = self else { return }
             self.viewModels = cellViewModels
             self.view?.setLoad(on: false)
+            self.view?.reloadData(posts: self.viewModels)
         }
     }
     
