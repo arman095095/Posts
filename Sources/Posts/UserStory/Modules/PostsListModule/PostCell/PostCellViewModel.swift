@@ -20,7 +20,6 @@ protocol PostCellViewModelProtocol {
     var online: Bool { get }
     var likedByMe: Bool { get }
     var likesCount: String { get }
-    var ownerMenuButtonWidth: CGFloat { get }
     var contentInset: CGFloat { get }
     var likesCountAfterLike: String { get }
     var textContentFrame: CGRect { get }
@@ -70,10 +69,6 @@ final class PostCellViewModel: FrameCalculated {
 extension PostCellViewModel: PostCellViewModelProtocol {
     var contentInset: CGFloat {
         frames?.postImageFrame.size == .zero ? -PostCellConstants.imageAndTextInset : PostCellConstants.zero
-    }
-    
-    var ownerMenuButtonWidth: CGFloat {
-        ownerMe ? PostCellConstants.menuButtonHeight : PostCellConstants.zero
     }
     
     var likesCount: String {

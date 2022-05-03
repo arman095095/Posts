@@ -64,8 +64,6 @@ final class PostCell: UITableViewCell {
         button.tintColor = .systemGray2
         return button
     }()
-    
-    private var ownerButtonWidthConstreint: NSLayoutConstraint!
     private var bottonViewTopConstraint: NSLayoutConstraint!
     
     //dynamic Views withoutConstreints
@@ -139,7 +137,6 @@ final class PostCell: UITableViewCell {
         self.personImage.image = nil
         self.onlineImageView.isHidden = true
         self.postsImageView.image = nil
-        self.ownerButtonWidthConstreint.constant = 0
         self.likeButton.tintColor = UIColor.postGrey()
     }
     
@@ -152,7 +149,6 @@ final class PostCell: UITableViewCell {
         personImage.sd_setImage(with: model.ownerImageUrl)
         nameLabel.text = model.userName
         dateLabel.text = model.date
-        ownerButtonWidthConstreint.constant = model.ownerMenuButtonWidth
         postTextView.text = model.textContent
         postsImageView.sd_setImage(with: model.urlImage)
         postTextView.frame = model.textContentFrame
@@ -276,8 +272,7 @@ private extension PostCell {
     func setupConstraintsForOwnerButton() {
         topView.addSubview(ownerButton)
         ownerButton.heightAnchor.constraint(equalToConstant: PostCellConstants.menuButtonHeight).isActive = true
-        ownerButtonWidthConstreint = ownerButton.widthAnchor.constraint(equalToConstant: 0)
-        ownerButtonWidthConstreint.isActive = true
+        ownerButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         ownerButton.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
         ownerButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -PostCellConstants.contentInset).isActive = true
     }
