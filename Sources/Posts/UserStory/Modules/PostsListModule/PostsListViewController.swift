@@ -38,6 +38,13 @@ final class PostsListViewController: UIViewController {
         output?.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        footer.stop()
+        PostCellConstants.topBarHeight = topBarHeight
+        PostCellConstants.bottonBarHeight = buttonBarHeight
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let output = output else { return }
         let bottomHeight = output.tabBarHidden ? 0 : buttonBarHeight
@@ -117,7 +124,6 @@ private extension PostsListViewController {
         tableView.allowsSelection = false
         tableView.backgroundColor = .systemGray6
         tableView.tableFooterView = footer
-        footer.stop()
         tableView.separatorStyle = .none
         tableView.contentInset.bottom = 10
         tableView.delegate = self
