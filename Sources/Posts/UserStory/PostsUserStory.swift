@@ -62,7 +62,7 @@ extension PostsUserStory: RouteMapPrivate {
         return module
     }
     
-    func postCreateModule() -> PostCreateModule {
+    func postCreateModule(output: PostCreateModuleOutput) -> PostCreateModule {
         let safeResolver = container.synchronize()
         guard let postManager = safeResolver.resolve(PostsManagerProtocol.self),
               let alertManager = safeResolver.resolve(AlertManagerProtocol.self) else {
@@ -70,7 +70,7 @@ extension PostsUserStory: RouteMapPrivate {
         }
         let module = PostCreateAssembly.makeModule(postManager: postManager,
                                                    alertManager: alertManager)
-        module.output = outputWrapper
+        module.output = output
         return module
     }
 }

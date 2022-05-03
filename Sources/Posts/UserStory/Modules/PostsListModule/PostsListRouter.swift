@@ -9,8 +9,9 @@
 import UIKit
 
 protocol PostsListRouterInput: AnyObject {
-    func openPostCreationModule()
+    func openPostCreationModule(output: PostCreateModuleOutput)
     func openMenuAlert(preserved: IndexPath)
+    func popToCurrentModule()
 }
 
 protocol PostsListRouterOutput: AnyObject {
@@ -28,14 +29,19 @@ final class PostsListRouter {
 }
 
 extension PostsListRouter: PostsListRouterInput {
+    func popToCurrentModule() {
+        guard let transitionHandler = transitionHandler else { return }
+        transitionHandler.navigationController?.popToViewController(transitionHandler, animated: true)
+    }
+    
     func openMenuAlert(preserved: IndexPath) {
         transitionHandler?.showAlertDelete(acceptHandler: {
             self.output?.delete(preserved: preserved)
         }, denyHandler: { })
     }
     
-    func openPostCreationModule() {
-        let module = routeMap.postCreateModule()
+    func openPostCreationModule(output: PostCreateModuleOutput) {
+        let module = routeMap.postCreateModule(output: output)
         transitionHandler?.navigationController?.pushViewController(module.view, animated: true)
     }
 }

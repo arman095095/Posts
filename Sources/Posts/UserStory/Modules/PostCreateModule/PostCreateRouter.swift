@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PostCreateRouterInput: AnyObject {
-    func dismissModule()
+    
 }
 
 final class PostCreateRouter {
@@ -17,7 +17,5 @@ final class PostCreateRouter {
 }
 
 extension PostCreateRouter: PostCreateRouterInput {
-    func dismissModule() {
-        transitionHandler?.navigationController?.dismiss(animated: true)
-    }
+    
 }

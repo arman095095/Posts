@@ -10,5 +10,5 @@ import UIKit
 
 protocol RouteMapPrivate: AnyObject {
     func postsListModule(context: InputFlowContext) -> PostsListModule
-    func postCreateModule() ->PostCreateModule
+    func postCreateModule(output: PostCreateModuleOutput) -> PostCreateModule
 }

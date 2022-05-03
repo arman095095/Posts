@@ -17,7 +17,7 @@ protocol PostCreateStringFactoryProtocol {
 }
 
 protocol PostCreateModuleOutput: AnyObject {
-    
+    func dismissAndUpdate()
 }
 
 protocol PostCreateModuleInput: AnyObject {
@@ -101,7 +101,7 @@ extension PostCreatePresenter: PostCreateInteractorOutput {
     func successCreatedPost() {
         alertManager.present(type: .success, title: stringFactory.successCreatedPost)
         view?.unlockUI()
-        router.dismissModule()
+        output?.dismissAndUpdate()
     }
     
     func failureCreatePost(message: String) {

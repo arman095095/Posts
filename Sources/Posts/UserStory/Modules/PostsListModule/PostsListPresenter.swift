@@ -199,10 +199,17 @@ extension PostsListPresenter: ListsHeaderTitleViewOutput {
     func mainButtonAction() {
         switch context {
         case .allPosts, .currentUser:
-            router.openPostCreationModule()
+            router.openPostCreationModule(output: self)
         case .user:
             break
         }
+    }
+}
+
+extension PostsListPresenter: PostCreateModuleOutput {
+    func dismissAndUpdate() {
+        router.popToCurrentModule()
+        requestPosts()
     }
 }
 
