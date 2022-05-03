@@ -36,5 +36,3 @@ final class RootModuleWrapper {
 extension RootModuleWrapper: PostsModuleInput { }
 
 extension RootModuleWrapper: PostsListModuleOutput { }
-
-extension RootModuleWrapper: PostCreateModuleOutput { }
