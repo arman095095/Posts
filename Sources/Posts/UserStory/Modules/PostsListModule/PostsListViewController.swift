@@ -111,6 +111,9 @@ extension PostsListViewController: PostsListViewInput {
 private extension PostsListViewController {
   
     func setupNavigationBar() {
+        if #available(iOS 11.0, *), postsViewModel.allPosts {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
         navigationItem.title = output?.title
         navigationController?.navigationBar.barTintColor = .systemGray6
         navigationController?.navigationBar.shadowImage = UIImage()
