@@ -12,11 +12,13 @@ private let remoteDependencies: [Package.Dependency] = [
     .package(url: "https://github.com/arman095095/AlertManager.git", branch: "develop"),
     .package(url: "https://github.com/arman095095/Selection.git", branch: "develop"),
     .package(url: "https://github.com/arman095095/Utils.git", branch: "develop"),
+    .package(url: "https://github.com/nathantannar4/InputBarAccessoryView.git", .upToNextMajor(from: "5.2.0"))
 ]
 
 private let localDependencies: [Package.Dependency] = [
     .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
     .package(url: "https://github.com/Swinject/Swinject.git", from: "2.8.0"),
+    .package(url: "https://github.com/nathantannar4/InputBarAccessoryView.git", .upToNextMajor(from: "5.2.0")),
     .package(path: "/Users/armancarhcan/Desktop/Workdir/Managers"),
     .package(path: "/Users/armancarhcan/Desktop/Workdir/Module"),
     .package(path: "/Users/armancarhcan/Desktop/Workdir/DesignSystem"),
@@ -49,6 +51,7 @@ let package = Package(
                            .product(name: "Selection", package: "Selection"),
                            .product(name: "Utils", package: "Utils"),
                            .product(name: "Swinject", package: "Swinject"),
-                           .product(name: "SDWebImage", package: "SDWebImage")]),
+                           .product(name: "SDWebImage", package: "SDWebImage"),
+                           .product(name: "InputBarAccessoryView", package: "InputBarAccessoryView")]),
     ]
 )

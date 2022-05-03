@@ -16,9 +16,10 @@ typealias PostsListModule = Module<PostsListModuleInput, PostsListModuleOutput>
 enum PostsListAssembly {
     static func makeModule(postManager: PostsManagerProtocol,
                            alertManager: AlertManagerProtocol,
-                           context: InputFlowContext) -> PostsListModule {
+                           context: InputFlowContext,
+                           routeMap: RouteMapPrivate) -> PostsListModule {
         let view = PostsListViewController()
-        let router = PostsListRouter()
+        let router = PostsListRouter(routeMap: routeMap)
         let interactor = PostsListInteractor(postsManager: postManager)
         let frameCalculator = FrameCalculator()
         let stringFactory = PostsStringFactory()

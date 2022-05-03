@@ -20,6 +20,11 @@ protocol PostsListRouterOutput: AnyObject {
 final class PostsListRouter {
     weak var transitionHandler: UIViewController?
     weak var output: PostsListRouterOutput?
+    private let routeMap: RouteMapPrivate
+    
+    init(routeMap: RouteMapPrivate) {
+        self.routeMap = routeMap
+    }
 }
 
 extension PostsListRouter: PostsListRouterInput {
@@ -30,6 +35,6 @@ extension PostsListRouter: PostsListRouterInput {
     }
     
     func openPostCreationModule() {
-        //
+        let module = routeMap.postCreateModule()
     }
 }

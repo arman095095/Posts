@@ -8,7 +8,12 @@
 import Foundation
 
 
-struct PostsStringFactory: PostsListStringFactoryProtocol {
+struct PostsStringFactory: PostsListStringFactoryProtocol,
+                           PostCreateStringFactoryProtocol {
+    var successCreatedPost: String = "Пост опубликован"
+    var sendButtonImageName: String = "sent"
+    var textViewPlaceholderText: String = "Что у Вас нового"
+    var removeButtonImageName: String = "Cancel"
     var createPostTitle: String = "Поделитесь, что у Вас нового"
     var allPostsTitle: String = "Лента"
     var userPostsTitle: String = "Посты"

@@ -14,7 +14,6 @@ import AlertManager
 
 public protocol PostsRouteMap: AnyObject {
     func allPostsModule() -> PostsModule
-    func createPostModule() -> ModuleProtocol
     func userPostsModule(userID: String, userName: String) -> PostsModule
     func currentAccountPostsModule(userID: String) -> PostsModule
 }
@@ -29,10 +28,6 @@ public final class PostsUserStory {
 
 extension PostsUserStory: PostsRouteMap {
 
-    public func createPostModule() -> ModuleProtocol {
-        fatalError("")
-    }
-    
     public func allPostsModule() -> PostsModule {
         let module = RootModuleWrapperAssembly.makeModule(routeMap: self, context: .allPosts)
         outputWrapper = module.input as? RootModuleWrapper
@@ -61,13 +56,22 @@ extension PostsUserStory: RouteMapPrivate {
         }
         let module = PostsListAssembly.makeModule(postManager: postManager,
                                                   alertManager: alertManager,
-                                                  context: context)
+                                                  context: context,
+                                                  routeMap: self)
         module.output = outputWrapper
         return module
     }
     
     func postCreateModule() -> PostCreateModule {
-        fatalError("")
+        let safeResolver = container.synchronize()
+        guard let postManager = safeResolver.resolve(PostsManagerProtocol.self),
+              let alertManager = safeResolver.resolve(AlertManagerProtocol.self) else {
+            fatalError(ErrorMessage.dependency.localizedDescription)
+        }
+        let module = PostCreateAssembly.makeModule(postManager: postManager,
+                                                   alertManager: alertManager)
+        module.output = outputWrapper
+        return module
     }
 }
 

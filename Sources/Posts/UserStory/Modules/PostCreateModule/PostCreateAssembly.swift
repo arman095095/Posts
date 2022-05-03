@@ -8,15 +8,22 @@
 
 import UIKit
 import Module
+import Managers
+import AlertManager
 
 typealias PostCreateModule = Module<PostCreateModuleInput, PostCreateModuleOutput>
 
 enum PostCreateAssembly {
-    static func makeModule() -> PostCreateModule {
+    static func makeModule(postManager: PostsManagerProtocol,
+                           alertManager: AlertManagerProtocol) -> PostCreateModule {
         let view = PostCreateViewController()
         let router = PostCreateRouter()
-        let interactor = PostCreateInteractor()
-        let presenter = PostCreatePresenter(router: router, interactor: interactor)
+        let interactor = PostCreateInteractor(postsManager: postManager)
+        let stringFactory = PostsStringFactory()
+        let presenter = PostCreatePresenter(router: router,
+                                            interactor: interactor,
+                                            stringFactory: stringFactory,
+                                            alertManager: alertManager)
         view.output = presenter
         interactor.output = presenter
         presenter.view = view
