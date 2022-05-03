@@ -68,7 +68,9 @@ extension PostsListViewController: PostsListViewInput {
             } else {
                 self.activityIndicator.completeLoading(success: true)
                 self.activityIndicator.isHidden = true
-                if refreshControl.isRefreshing { refreshControl.endRefreshing() }
+                if self.refreshControl.isRefreshing {
+                    self.refreshControl.endRefreshing()
+                }
             }
         }
     }
