@@ -26,8 +26,8 @@ final class RootModuleWrapper {
         self.routeMap = routeMap
     }
 
-    func view() -> UIViewController {
-        let module = routeMap.//
+    func view(context: InputFlowContext) -> UIViewController {
+        let module = routeMap.postsListModule(context: context)
         module.output = self
         return module.view
     }
@@ -36,3 +36,5 @@ final class RootModuleWrapper {
 extension RootModuleWrapper: PostsModuleInput {
     
 }
+
+extension RootModuleWrapper: PostsListModuleOutput { }

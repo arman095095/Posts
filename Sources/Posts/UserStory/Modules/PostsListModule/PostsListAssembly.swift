@@ -21,9 +21,11 @@ enum PostsListAssembly {
         let router = PostsListRouter()
         let interactor = PostsListInteractor(postsManager: postManager)
         let frameCalculator = FrameCalculator()
+        let stringFactory = PostsStringFactory()
         let presenter = PostsListPresenter(router: router,
                                            interactor: interactor,
                                            alertManager: alertManager,
+                                           stringFactory: stringFactory,
                                            frameCalculator: frameCalculator,
                                            context: context)
         view.output = presenter

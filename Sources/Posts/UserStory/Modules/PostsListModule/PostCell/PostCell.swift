@@ -61,7 +61,6 @@ final class PostCell: UITableViewCell {
     private let ownerButton: SmallButton = {
         let button = SmallButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "menu"), for: .normal)
         button.tintColor = .systemGray2
         return button
     }()
@@ -89,12 +88,11 @@ final class PostCell: UITableViewCell {
     private let fullTextButton : UIButton = {
         var view = UIButton(type: UIButton.ButtonType.system)
         view.titleLabel?.font = PostCellConstants.buttonFont
-        view.setTitle("показать полностью...", for: .normal)
+        view.setTitle(PostCellConstants.buttonTitle, for: .normal)
         return view
     }()
     private lazy var onlineImageView: UIImageView = {
         var view = UIImageView()
-        view.image = UIImage(named: "online")
         view.translatesAutoresizingMaskIntoConstraints = false
         view.tintColor = UIColor.onlineColor()
         view.layer.cornerRadius = 7.5
@@ -116,8 +114,6 @@ final class PostCell: UITableViewCell {
     }()
     private let likeButton: UIButton = {
         var view = UIButton(type: .system)
-        let config = UIImage.SymbolConfiguration(weight: UIImage.SymbolWeight.medium)
-        view.setImage(UIImage(systemName: "heart",withConfiguration: config), for: .normal)
         view.tintColor = UIColor.postGrey()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -152,7 +148,6 @@ final class PostCell: UITableViewCell {
     }
     
     func config(model: PostCellViewModelProtocol) {
-        guard let frames = model.frames else { return }
         self.model = model
         personImage.sd_setImage(with: model.ownerImageUrl)
         nameLabel.text = model.userName
@@ -160,9 +155,9 @@ final class PostCell: UITableViewCell {
         ownerButtonWidthConstreint.constant = model.ownerMenuButtonWidth
         postTextView.text = model.textContent
         postsImageView.sd_setImage(with: model.urlImage)
-        postTextView.frame = frames.textContentFrame
-        postsImageView.frame = frames.postImageFrame
-        fullTextButton.frame = frames.buttonFrame
+        postTextView.frame = model.textContentFrame
+        postsImageView.frame = model.postImageFrame
+        fullTextButton.frame = model.buttonFrame
         onlineImageView.isHidden = !model.online
         likesCountLabel.text = model.likesCount
         likeButton.tintColor = model.likedByMe ? .systemRed : UIColor.postGrey()
@@ -194,13 +189,17 @@ final class PostCell: UITableViewCell {
 private extension PostCell {
     
     func setupViews() {
-        self.backgroundColor = .clear
+        onlineImageView.image = UIImage(named: "online")
+        fullTextButton.setImage(UIImage(named: "menu"), for: .normal)
+        let config = UIImage.SymbolConfiguration(weight: UIImage.SymbolWeight.medium)
+        likeButton.setImage(UIImage(systemName: "heart", withConfiguration: config), for: .normal)
+        backgroundColor = .clear
         cardView.layer.cornerRadius = 8
         cardView.clipsToBounds = true
-        self.layer.shadowRadius = 4
-        self.layer.shadowOpacity = 0.4
-        self.layer.shadowOffset = CGSize(width: 2.5, height: 4)
-        self.layer.shadowColor = UIColor.black.cgColor
+        layer.shadowRadius = 4
+        layer.shadowOpacity = 0.4
+        layer.shadowOffset = CGSize(width: 2.5, height: 4)
+        layer.shadowColor = UIColor.black.cgColor
     }
     
     func setupActions() {

@@ -66,9 +66,11 @@ final class PostsListPresenter {
     init(router: PostsListRouterInput,
          interactor: PostsListInteractorInput,
          alertManager: AlertManagerProtocol,
+         stringFactory: PostsListStringFactoryProtocol,
          frameCalculator: FrameCalculatorProtocol,
          context: InputFlowContext) {
         self.router = router
+        self.stringFactory = stringFactory
         self.interactor = interactor
         self.context = context
         self.alertManager = alertManager
@@ -81,13 +83,13 @@ extension PostsListPresenter: PostsListViewOutput {
 
     func reveal(at indexPath: IndexPath) {
         let viewModel = viewModels[indexPath.row]
-        viewModel.showedFullText = true
+        //viewModel.showedFullText = true
         view?.reloadData(post: viewModel)
     }
     
     func likePost(at indexPath: IndexPath) {
         let post = viewModels[indexPath.row]
-        post.likedByMe.toggle()
+        //post.likedByMe.toggle()
         if post.likedByMe {
             interactor.like(postID: post.id, ownerID: post.userID)
         } else {
@@ -152,7 +154,7 @@ extension PostsListPresenter: PostsListViewOutput {
     }
     
     func rowHeight(at indexPath: IndexPath) -> CGFloat {
-        viewModels[indexPath.row].frames?.height ?? 0
+        viewModels[indexPath.row].height
     }
     
     func requestPosts() {
@@ -202,28 +204,32 @@ extension PostsListPresenter: PostsListInteractorOutput {
     }
     
     func successLoadedAllFirstPosts(_ posts: [PostModelProtocol]) {
-        handlePosts(models: posts) { cellViewModels in
+        handlePosts(models: posts) { [weak self] cellViewModels in
+            guard let self = self else { return }
             self.viewModels = cellViewModels
-            view?.setLoad(on: false)
+            self.view?.setLoad(on: false)
         }
     }
     
     func successLoadedAllNextPosts(_ posts: [PostModelProtocol]) {
-        handlePosts(models: posts) { cellViewModels in
+        handlePosts(models: posts) { [weak self] cellViewModels in
+            guard let self = self else { return }
             self.viewModels.append(contentsOf: cellViewModels)
-            view?.setFooterLoad(on: false)
+            self.view?.setFooterLoad(on: false)
         }
     }
     
     func successLoadedUserFirstPosts(_ posts: [PostModelProtocol]) {
-        handlePosts(models: posts) { cellViewModels in
+        handlePosts(models: posts) { [weak self] cellViewModels in
+            guard let self = self else { return }
             self.viewModels = cellViewModels
-            view?.setLoad(on: false)
+            self.view?.setLoad(on: false)
         }
     }
     
     func successLoadedUserNextPosts(_ posts: [PostModelProtocol]) {
-        handlePosts(models: posts) { cellViewModels in
+        handlePosts(models: posts) { [weak self] cellViewModels in
+            guard let self = self else { return }
             self.viewModels.append(contentsOf: cellViewModels)
             self.view?.setFooterLoad(on: false)
             self.view?.reloadData(posts: self.viewModels)
@@ -263,7 +269,7 @@ private extension PostsListPresenter {
 
 private extension PostsListPresenter {
     func handlePosts(models: [PostModelProtocol],
-                     completion: ([PostCellViewModel]) -> ()) {
+                     completion: @escaping ([PostCellViewModel]) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
             let viewModels: [PostCellViewModel] = models.map {
                 let cellViewModel = PostCellViewModel(model: $0)

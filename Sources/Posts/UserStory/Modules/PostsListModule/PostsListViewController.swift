@@ -187,49 +187,6 @@ extension PostsListViewController: PostCellOutput {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         output?.openUserProfile(at: indexPath)
     }
-    
-    /*func likePost(cell: PostCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        postsViewModel.likePost(at: indexPath)
-    }
-    
-    func openUserProfile(cell: PostCell) {
-        if postsViewModel.allPosts {
-            let postOwner = postsViewModel.postOwner(at: tableView.indexPath(for: cell))
-            let vc = Builder.shared.profileVC(friend: postOwner, managers: postsViewModel.managers)
-            present(vc, animated: true)
-        } else if let _ = navigationController?.popViewController(animated: true) {
-            return
-        } else {
-            navigationController?.dismiss(animated: true)
-        }
-    }
-    
-    func reloadCell(cell: PostCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let post = postsViewModel.showFullText(at: indexPath)
-        reloadCell(post: post)
-    }
-    
-    func presentOwnerAlert(cell: PostCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let alert = UIAlertController(title: "Вы уверены?", message: "Хотите удалить этот пост?", preferredStyle: .actionSheet)
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
-        let okAction = UIAlertAction(title: "Удалить", style: .destructive, handler: { [weak self] _ in
-            guard let self = self else { return }
-            self.deletePost(indexPath: indexPath)
-        })
-        alert.addAction(cancelAction)
-        alert.addAction(okAction)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    private func deletePost(indexPath: IndexPath) {
-        let post = postsViewModel.post(at: indexPath)
-        postsViewModel.deletePost(post: post)
-        reloadDataWithDeletedPost(post: post)
-        Alert.present(type: .success, title: "Пост удален")
-    }*/
 }
 
 //MARK: UITableViewDelegate

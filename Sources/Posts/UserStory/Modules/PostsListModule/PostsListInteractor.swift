@@ -40,6 +40,7 @@ final class PostsListInteractor {
     
     init(postsManager: PostsManagerProtocol) {
         self.postsManager = postsManager
+        self.isExecuting = false
     }
 }
 

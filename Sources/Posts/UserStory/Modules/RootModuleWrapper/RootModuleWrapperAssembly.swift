@@ -9,12 +9,12 @@
 import UIKit
 import Module
 
-typealias PostsModule = Module<PostsModuleInput, PostsModuleOutput>
+public typealias PostsModule = Module<PostsModuleInput, PostsModuleOutput>
 
 enum RootModuleWrapperAssembly {
-    static func makeModule(routeMap: RouteMapPrivate) -> PostsModule {
+    static func makeModule(routeMap: RouteMapPrivate, context: InputFlowContext) -> PostsModule {
         let wrapper = RootModuleWrapper(routeMap: routeMap)
-        return PostsModule(input: wrapper, view: wrapper.view()) {
+        return PostsModule(input: wrapper, view: wrapper.view(context: context)) {
             wrapper.output = $0
         }
     }
