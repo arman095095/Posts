@@ -152,6 +152,7 @@ extension PostsListPresenter: PostsListViewOutput {
     
     func viewDidLoad() {
         view?.setupInitialState()
+        view?.setLoad(on: true)
         requestPosts()
     }
     
@@ -164,7 +165,6 @@ extension PostsListPresenter: PostsListViewOutput {
     }
     
     func requestPosts() {
-        view?.setLoad(on: true)
         switch context {
         case .allPosts:
             interactor.requestFirstPosts()
