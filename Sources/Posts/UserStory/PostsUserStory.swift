@@ -51,10 +51,12 @@ extension PostsUserStory: RouteMapPrivate {
     func postsListModule(context: InputFlowContext) -> PostsListModule {
         let safeResolver = container.synchronize()
         guard let postManager = safeResolver.resolve(PostsManagerProtocol.self),
-              let alertManager = safeResolver.resolve(AlertManagerProtocol.self) else {
+              let alertManager = safeResolver.resolve(AlertManagerProtocol.self),
+              let accountID = safeResolver.resolve(AccountModelProtocol.self)?.profile.id else {
             fatalError(ErrorMessage.dependency.localizedDescription)
         }
-        let module = PostsListAssembly.makeModule(postManager: postManager,
+        let module = PostsListAssembly.makeModule(accountID: accountID,
+                                                  postManager: postManager,
                                                   alertManager: alertManager,
                                                   context: context,
                                                   routeMap: self)

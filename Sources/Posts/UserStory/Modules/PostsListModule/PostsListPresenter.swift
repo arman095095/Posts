@@ -63,6 +63,7 @@ final class PostsListPresenter {
     private let stringFactory: PostsListStringFactoryProtocol
     private let alertManager: AlertManagerProtocol
     private let frameCalculator: FrameCalculatorProtocol
+    private let accountID: String
     private let context: InputFlowContext
     private var viewModels: [PostCellViewModel]
     private var allowedNextPosts: Bool
@@ -72,13 +73,15 @@ final class PostsListPresenter {
          alertManager: AlertManagerProtocol,
          stringFactory: PostsListStringFactoryProtocol,
          frameCalculator: FrameCalculatorProtocol,
-         context: InputFlowContext) {
+         context: InputFlowContext,
+         accountID: String) {
         self.router = router
         self.stringFactory = stringFactory
         self.interactor = interactor
         self.context = context
         self.alertManager = alertManager
         self.frameCalculator = frameCalculator
+        self.accountID = accountID
         self.viewModels = []
         self.allowedNextPosts = false
     }
@@ -94,12 +97,15 @@ extension PostsListPresenter: PostsListViewOutput {
     
     func likePost(at indexPath: IndexPath) {
         let post = viewModels[indexPath.row]
-        post.likedByMe.toggle()
         if post.likedByMe {
-            interactor.like(postID: post.id, ownerID: post.userID)
-        } else {
+            guard let index = post.likersIds.firstIndex(of: accountID) else { return }
+            post.likersIds.remove(at: index)
             interactor.unlike(postID: post.id, ownerID: post.userID)
+        } else {
+            post.likersIds.append(accountID)
+            interactor.like(postID: post.id, ownerID: post.userID)
         }
+        post.likedByMe.toggle()
     }
     
     func presentMenu(at indexPath: IndexPath) {
@@ -182,8 +188,7 @@ extension PostsListPresenter: PostsListViewOutput {
     }
     
     func requestMorePosts() {
-        guard allowedNextPosts,
-              viewModels.count >= PostsManager.Limits.posts.rawValue else { return }
+        guard allowedNextPosts else { return }
         view?.setFooterLoad(on: true)
         allowedNextPosts = false
         switch context {

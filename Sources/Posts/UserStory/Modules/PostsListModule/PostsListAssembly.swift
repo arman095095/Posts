@@ -14,7 +14,8 @@ import AlertManager
 typealias PostsListModule = Module<PostsListModuleInput, PostsListModuleOutput>
 
 enum PostsListAssembly {
-    static func makeModule(postManager: PostsManagerProtocol,
+    static func makeModule(accountID: String,
+                           postManager: PostsManagerProtocol,
                            alertManager: AlertManagerProtocol,
                            context: InputFlowContext,
                            routeMap: RouteMapPrivate) -> PostsListModule {
@@ -28,7 +29,8 @@ enum PostsListAssembly {
                                            alertManager: alertManager,
                                            stringFactory: stringFactory,
                                            frameCalculator: frameCalculator,
-                                           context: context)
+                                           context: context,
+                                           accountID: accountID)
         view.output = presenter
         interactor.output = presenter
         presenter.view = view
