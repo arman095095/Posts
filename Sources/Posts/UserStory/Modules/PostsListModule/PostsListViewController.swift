@@ -117,6 +117,7 @@ private extension PostsListViewController {
         tableView.allowsSelection = false
         tableView.backgroundColor = .systemGray6
         tableView.tableFooterView = footer
+        footer.stop()
         tableView.separatorStyle = .none
         tableView.contentInset.bottom = 10
         tableView.delegate = self

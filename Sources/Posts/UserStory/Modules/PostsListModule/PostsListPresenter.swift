@@ -85,13 +85,13 @@ extension PostsListPresenter: PostsListViewOutput {
 
     func reveal(at indexPath: IndexPath) {
         let viewModel = viewModels[indexPath.row]
-        //viewModel.showedFullText = true
+        viewModel.showedFullText = true
         view?.reloadData(post: viewModel)
     }
     
     func likePost(at indexPath: IndexPath) {
         let post = viewModels[indexPath.row]
-        //post.likedByMe.toggle()
+        post.likedByMe.toggle()
         if post.likedByMe {
             interactor.like(postID: post.id, ownerID: post.userID)
         } else {
