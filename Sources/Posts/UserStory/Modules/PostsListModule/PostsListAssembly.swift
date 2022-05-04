@@ -35,6 +35,7 @@ enum PostsListAssembly {
         interactor.output = presenter
         presenter.view = view
         router.transitionHandler = view
+        router.output = presenter
         return PostsListModule(input: presenter, view: view) {
             presenter.output = $0
         }

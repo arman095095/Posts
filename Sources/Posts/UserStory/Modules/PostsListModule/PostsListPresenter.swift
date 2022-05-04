@@ -188,7 +188,8 @@ extension PostsListPresenter: PostsListViewOutput {
     }
     
     func requestMorePosts() {
-        guard allowedNextPosts else { return }
+        guard allowedNextPosts,
+              viewModels.count >= PostsManager.Limits.posts.rawValue else { return }
         view?.setFooterLoad(on: true)
         allowedNextPosts = false
         switch context {
@@ -244,7 +245,7 @@ extension PostsListPresenter: PostsListInteractorOutput {
             self.viewModels.append(contentsOf: cellViewModels)
             self.view?.setFooterLoad(on: false)
             self.view?.reloadData(posts: self.viewModels)
-            self.allowedNextPosts = true
+            self.allowedNextPosts = !cellViewModels.isEmpty
         }
     }
     
@@ -264,7 +265,7 @@ extension PostsListPresenter: PostsListInteractorOutput {
             self.viewModels.append(contentsOf: cellViewModels)
             self.view?.setFooterLoad(on: false)
             self.view?.reloadData(posts: self.viewModels)
-            self.allowedNextPosts = true
+            self.allowedNextPosts = !cellViewModels.isEmpty
         }
     }
     

@@ -19,7 +19,7 @@ protocol PostCellOutput: AnyObject {
 
 final class PostCell: UITableViewCell {
     
-    static let cellID = "PostCell"
+    static let cellID = Constants.cellID
     weak var output: PostCellOutput?
     private var model: PostCellViewModelProtocol?
     
@@ -66,7 +66,7 @@ final class PostCell: UITableViewCell {
     }()
     private var bottonViewTopConstraint: NSLayoutConstraint!
     
-    //dynamic Views withoutConstreints
+    //dynamic Views withoutConstraints
     private let postsImageView: UIImageView = {
         var view = UIImageView()
         view.contentMode = .scaleToFill
@@ -148,16 +148,17 @@ final class PostCell: UITableViewCell {
         self.model = model
         personImage.sd_setImage(with: model.ownerImageUrl)
         nameLabel.text = model.userName
+        onlineImageView.isHidden = !model.onlineIconShow
         dateLabel.text = model.date
         postTextView.text = model.textContent
         postsImageView.sd_setImage(with: model.urlImage)
         postTextView.frame = model.textContentFrame
         postsImageView.frame = model.postImageFrame
         fullTextButton.frame = model.buttonFrame
-        onlineImageView.isHidden = !model.online
         likesCountLabel.text = model.likesCount
         likeButton.tintColor = model.likedByMe ? .systemRed : UIColor.postGrey()
         bottonViewTopConstraint.constant = model.contentInset
+        ownerButton.isHidden = !model.menuButtonShow
         layoutIfNeeded()
     }
     
@@ -185,10 +186,10 @@ final class PostCell: UITableViewCell {
 private extension PostCell {
     
     func setupViews() {
-        onlineImageView.image = UIImage(named: "online")
-        fullTextButton.setImage(UIImage(named: "menu"), for: .normal)
+        onlineImageView.image = UIImage(named: Constants.onlineImageName)
+        ownerButton.setImage(UIImage(named: Constants.ownerButtonImageName), for: .normal)
         let config = UIImage.SymbolConfiguration(weight: UIImage.SymbolWeight.medium)
-        likeButton.setImage(UIImage(systemName: "heart", withConfiguration: config), for: .normal)
+        likeButton.setImage(UIImage(systemName: Constants.likeButtonSystemImageName, withConfiguration: config), for: .normal)
         backgroundColor = .clear
         cardView.layer.cornerRadius = 8
         cardView.clipsToBounds = true
@@ -272,7 +273,7 @@ private extension PostCell {
     func setupConstraintsForOwnerButton() {
         topView.addSubview(ownerButton)
         ownerButton.heightAnchor.constraint(equalToConstant: PostCellConstants.menuButtonHeight).isActive = true
-        ownerButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        ownerButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         ownerButton.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
         ownerButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -PostCellConstants.contentInset).isActive = true
     }
@@ -307,5 +308,14 @@ private extension PostCell {
         likesCountLabel.centerYAnchor.constraint(equalTo: likesView.centerYAnchor).isActive = true
         likesCountLabel.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor,constant: 3).isActive = true
         likesCountLabel.trailingAnchor.constraint(equalTo: likesView.trailingAnchor).isActive = true
+    }
+}
+
+private extension PostCell {
+    struct Constants {
+        static let cellID = "PostCell"
+        static let onlineImageName = "online"
+        static let ownerButtonImageName = "menu"
+        static let likeButtonSystemImageName = "heart"
     }
 }
