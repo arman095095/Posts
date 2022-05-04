@@ -39,7 +39,7 @@ protocol PostsListViewOutput: AnyObject {
 }
 
 enum InputFlowContext: Equatable {
-    case user(id: String, userName: String)
+    case user(id: String)
     case currentUser(id: String)
     case allPosts
 }
@@ -113,7 +113,10 @@ extension PostsListPresenter: PostsListViewOutput {
     }
     
     func openUserProfile(at indexPath: IndexPath) {
-        
+        guard case .allPosts = context else { return }
+        let model = post(at: indexPath)
+        guard model.owner.id != accountID else { return }
+        router.openUserProfile(model.owner)
     }
     
     var postsTitleHeight: CGFloat {
@@ -131,8 +134,8 @@ extension PostsListPresenter: PostsListViewOutput {
 
     var title: String {
         switch context {
-        case .user(_, let userName):
-            return stringFactory.userPostsTitle + " " + userName
+        case .user:
+            return stringFactory.userPostsTitle
         case .currentUser:
             return stringFactory.currentUserPostsTitle
         case .allPosts:
@@ -182,7 +185,7 @@ extension PostsListPresenter: PostsListViewOutput {
         switch context {
         case .allPosts:
             interactor.requestFirstPosts()
-        case .user(let id, _), .currentUser(let id):
+        case .user(let id), .currentUser(let id):
             interactor.requestFirstPosts(userID: id)
         }
     }
@@ -195,7 +198,7 @@ extension PostsListPresenter: PostsListViewOutput {
         switch context {
         case .allPosts:
             interactor.requestNextPosts()
-        case .user(let id, _), .currentUser(let id):
+        case .user(let id), .currentUser(let id):
             interactor.requestNextPosts(userID: id)
         }
     }
@@ -213,8 +216,7 @@ extension PostsListPresenter: ListsHeaderTitleViewOutput {
 }
 
 extension PostsListPresenter: PostCreateModuleOutput {
-    func dismissAndUpdate() {
-        router.popToCurrentModule()
+    func updatePostList() {
         requestPosts()
     }
 }
@@ -307,7 +309,7 @@ private extension PostsListPresenter {
                      completion: @escaping ([PostCellViewModel]) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
             let viewModels: [PostCellViewModel] = models.map {
-                let cellViewModel = PostCellViewModel(model: $0)
+                let cellViewModel = PostCellViewModel(model: $0, owner: $0.owner)
                 let frames = self.frameCalculator.calculate(model: cellViewModel)
                 cellViewModel.frames = frames.visibleFrame
                 cellViewModel.realFrames = frames.realFrame

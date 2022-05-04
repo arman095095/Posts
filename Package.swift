@@ -25,6 +25,8 @@ private let localDependencies: [Package.Dependency] = [
     .package(path: "/Users/armancarhcan/Desktop/Workdir/AlertManager"),
     .package(path: "/Users/armancarhcan/Desktop/Workdir/Selection"),
     .package(path: "/Users/armancarhcan/Desktop/Workdir/Utils"),
+    .package(path: "/Users/armancarhcan/Desktop/Workdir/PostsRouteMap"),
+    .package(path: "/Users/armancarhcan/Desktop/Workdir/UserStoryFacade")
 ]
 
 let isDev = true
@@ -52,6 +54,8 @@ let package = Package(
                            .product(name: "Utils", package: "Utils"),
                            .product(name: "Swinject", package: "Swinject"),
                            .product(name: "SDWebImage", package: "SDWebImage"),
-                           .product(name: "InputBarAccessoryView", package: "InputBarAccessoryView")]),
+                           .product(name: "InputBarAccessoryView", package: "InputBarAccessoryView"),
+                           .product(name: "PostsRouteMap", package: "PostsRouteMap"),
+                           .product(name: "UserStoryFacade", package: "UserStoryFacade")]),
     ]
 )

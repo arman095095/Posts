@@ -11,12 +11,9 @@ import Swinject
 import Module
 import Managers
 import AlertManager
-
-public protocol PostsRouteMap: AnyObject {
-    func allPostsModule() -> PostsModule
-    func userPostsModule(userID: String, userName: String) -> PostsModule
-    func currentAccountPostsModule(userID: String) -> PostsModule
-}
+import PostsRouteMap
+import UserStoryFacade
+import ProfileRouteMap
 
 public final class PostsUserStory {
     private let container: Container
@@ -34,8 +31,8 @@ extension PostsUserStory: PostsRouteMap {
         return module
     }
     
-    public func userPostsModule(userID: String, userName: String) -> PostsModule {
-        let module = RootModuleWrapperAssembly.makeModule(routeMap: self, context: .user(id: userID, userName: userName))
+    public func userPostsModule(userID: String) -> PostsModule {
+        let module = RootModuleWrapperAssembly.makeModule(routeMap: self, context: .user(id: userID))
         outputWrapper = module.input as? RootModuleWrapper
         return module
     }
@@ -48,6 +45,15 @@ extension PostsUserStory: PostsRouteMap {
 }
 
 extension PostsUserStory: RouteMapPrivate {
+    
+    func profileModule(profile: ProfileModelProtocol) -> ProfileModule {
+        let safeResolver = container.synchronize()
+        guard let module = safeResolver.resolve(UserStoryFacade.self)?.profileUserStory?.friendAccountModule(profile: profile) else {
+            fatalError(ErrorMessage.dependency.localizedDescription)
+        }
+        return module
+    }
+    
     func postsListModule(context: InputFlowContext) -> PostsListModule {
         let safeResolver = container.synchronize()
         guard let postManager = safeResolver.resolve(PostsManagerProtocol.self),

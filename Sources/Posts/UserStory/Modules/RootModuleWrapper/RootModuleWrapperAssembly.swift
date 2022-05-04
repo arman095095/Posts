@@ -8,8 +8,7 @@
 
 import UIKit
 import Module
-
-public typealias PostsModule = Module<PostsModuleInput, PostsModuleOutput>
+import PostsRouteMap
 
 enum RootModuleWrapperAssembly {
     static func makeModule(routeMap: RouteMapPrivate, context: InputFlowContext) -> PostsModule {

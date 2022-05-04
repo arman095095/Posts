@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import Managers
 
 protocol PostsListRouterInput: AnyObject {
     func openPostCreationModule(output: PostCreateModuleOutput)
     func openMenuAlert(preserved: IndexPath)
-    func popToCurrentModule()
+    func openUserProfile(_ profile: ProfileModelProtocol)
 }
 
 protocol PostsListRouterOutput: AnyObject {
@@ -29,11 +30,12 @@ final class PostsListRouter {
 }
 
 extension PostsListRouter: PostsListRouterInput {
-    func popToCurrentModule() {
-        guard let transitionHandler = transitionHandler else { return }
-        transitionHandler.navigationController?.popToViewController(transitionHandler, animated: true)
+
+    func openUserProfile(_ profile: ProfileModelProtocol) {
+        let module = routeMap.profileModule(profile: profile)
+        transitionHandler?.navigationController?.pushViewController(module.view, animated: true)
     }
-    
+
     func openMenuAlert(preserved: IndexPath) {
         transitionHandler?.showAlertDelete(acceptHandler: {
             self.output?.delete(preserved: preserved)

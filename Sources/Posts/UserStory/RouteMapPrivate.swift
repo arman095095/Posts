@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import Managers
+import ProfileRouteMap
 
 protocol RouteMapPrivate: AnyObject {
     func postsListModule(context: InputFlowContext) -> PostsListModule
     func postCreateModule(output: PostCreateModuleOutput) -> PostCreateModule
+    func profileModule(profile: ProfileModelProtocol) -> ProfileModule
 }

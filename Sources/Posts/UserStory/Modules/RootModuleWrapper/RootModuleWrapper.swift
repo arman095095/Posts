@@ -8,14 +8,7 @@
 
 import UIKit
 import Module
-
-public protocol PostsModuleInput: AnyObject {
-    
-}
-
-public protocol PostsModuleOutput: AnyObject {
-    
-}
+import PostsRouteMap
 
 final class RootModuleWrapper {
 

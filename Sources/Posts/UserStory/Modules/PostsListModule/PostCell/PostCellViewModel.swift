@@ -27,14 +27,12 @@ protocol PostCellViewModelProtocol: AnyObject {
     var height: CGFloat { get }
     var onlineIconShow: Bool { get }
     var menuButtonShow: Bool { get }
+    var owner: ProfileModelProtocol { get }
 }
 
 final class PostCellViewModel {
-    private let name: String
-    private let ownerImageURL: URL?
-    private let online: Bool
-    private let removedOwner: Bool
     private let ownerMe: Bool
+    var owner: ProfileModelProtocol
     let userID: String
     let textContent: String
     let id: String
@@ -47,7 +45,7 @@ final class PostCellViewModel {
     var showedFullText: Bool
     var likedByMe: Bool
     
-    init(model: PostModelProtocol) {
+    init(model: PostModelProtocol, owner: ProfileModelProtocol) {
         if let urlImage = model.urlImage,
            let width = model.imageWidth,
            let height = model.imageHeight {
@@ -58,11 +56,8 @@ final class PostCellViewModel {
         self.textContent = model.textContent
         self.likersIds = model.likersIds
         self.userID = model.userID
+        self.owner = owner
         self.date = DateFormatService().convertDate(from: model.date)
-        self.name = model.owner.userName
-        self.ownerImageURL = URL(string: model.owner.imageUrl)
-        self.online = model.owner.online
-        self.removedOwner = model.owner.removed
         self.likedByMe = model.likedByMe
         self.ownerMe = model.ownerMe
         self.showedFullText = false
@@ -77,15 +72,15 @@ extension PostCellViewModel: PostCellViewModelProtocol,
     }
 
     var userName: String {
-        removedOwner ? Constants.removedUserName : name
+        owner.removed ? Constants.removedUserName : owner.userName
     }
     
     var ownerImageUrl: URL? {
-        removedOwner ? URL(string: Constants.removedUserImageURL) : ownerImageURL
+        owner.removed ? URL(string: Constants.removedUserImageURL) : URL(string: owner.imageUrl)
     }
     
     var onlineIconShow: Bool {
-        removedOwner ? false : online
+        owner.removed ? false : owner.online
     }
     
     
