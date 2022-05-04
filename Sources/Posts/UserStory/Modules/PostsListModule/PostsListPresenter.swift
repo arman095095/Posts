@@ -10,6 +10,7 @@ import UIKit
 import DesignSystem
 import Managers
 import AlertManager
+import ModelInterfaces
 
 protocol PostsListModuleOutput: AnyObject {
     

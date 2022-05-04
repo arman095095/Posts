@@ -9,6 +9,7 @@
 import UIKit
 import Managers
 import ProfileRouteMap
+import ModelInterfaces
 
 protocol RouteMapPrivate: AnyObject {
     func postsListModule(context: InputFlowContext) -> PostsListModule

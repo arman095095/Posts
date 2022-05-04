@@ -9,6 +9,7 @@ import Foundation
 import Managers
 import UIKit
 import Utils
+import ModelInterfaces
 
 protocol PostCellViewModelProtocol: AnyObject {
     var date: String { get }

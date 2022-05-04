@@ -14,6 +14,7 @@ import AlertManager
 import PostsRouteMap
 import UserStoryFacade
 import ProfileRouteMap
+import ModelInterfaces
 
 public final class PostsUserStory {
     private let container: Container

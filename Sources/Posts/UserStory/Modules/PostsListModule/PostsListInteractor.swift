@@ -8,6 +8,7 @@
 
 import UIKit
 import Managers
+import ModelInterfaces
 
 protocol PostsListInteractorInput: AnyObject {
     func requestFirstPosts(userID: String)

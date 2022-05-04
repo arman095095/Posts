@@ -8,6 +8,7 @@
 
 import UIKit
 import Managers
+import ModelInterfaces
 
 protocol PostsListRouterInput: AnyObject {
     func openPostCreationModule(output: PostCreateModuleOutput)
