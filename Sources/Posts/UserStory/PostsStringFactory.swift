@@ -11,7 +11,7 @@ import Foundation
 struct PostsStringFactory: PostsListStringFactoryProtocol,
                            PostCreateStringFactoryProtocol {
     var successCreatedPost: String = "Пост опубликован"
-    var sendButtonImageName: String = "sent"
+    var sendButtonImageName: String = "Sent"
     var textViewPlaceholderText: String = "Что у Вас нового"
     var removeButtonImageName: String = "Cancel"
     var createPostTitle: String = "Поделитесь, что у Вас нового"
