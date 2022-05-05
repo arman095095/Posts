@@ -186,8 +186,8 @@ final class PostCell: UITableViewCell {
 private extension PostCell {
     
     func setupViews() {
-        onlineImageView.image = UIImage(named: Constants.onlineImageName)
-        ownerButton.setImage(UIImage(named: Constants.ownerButtonImageName), for: .normal)
+        onlineImageView.image = UIImage(named: Constants.onlineImageName, in: Bundle.module, compatibleWith: nil)
+        ownerButton.setImage(UIImage(named: Constants.ownerButtonImageName, in: Bundle.module, compatibleWith: nil), for: .normal)
         let config = UIImage.SymbolConfiguration(weight: UIImage.SymbolWeight.medium)
         likeButton.setImage(UIImage(systemName: Constants.likeButtonSystemImageName, withConfiguration: config), for: .normal)
         backgroundColor = .clear

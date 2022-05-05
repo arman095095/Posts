@@ -181,7 +181,7 @@ private extension PostCreateViewController {
 private extension PostCreateViewController {
     func setupNavigationBar(stringFactory: PostCreateStringFactoryProtocol) {
         navigationItem.largeTitleDisplayMode = .never
-        let sendButton = UIBarButtonItem(image: UIImage(named: stringFactory.sendButtonImageName), style: .done, target: self, action: #selector(createPostTapped))
+        let sendButton = UIBarButtonItem(image: UIImage(named: stringFactory.sendButtonImageName, in: Bundle.module, compatibleWith: nil), style: .done, target: self, action: #selector(createPostTapped))
         let template = sendButton.image?.withRenderingMode(.alwaysTemplate)
         sendButton.image = template
         sendButton.tintColor = UIColor.mainApp()
@@ -200,7 +200,7 @@ private extension PostCreateViewController {
     
     func setupViews(stringFactory: PostCreateStringFactoryProtocol) {
         textView.placeholder = stringFactory.textViewPlaceholderText
-        removeButton.setImage(UIImage(named: stringFactory.removeButtonImageName), for: .normal)
+        removeButton.setImage(UIImage(named: stringFactory.removeButtonImageName, in: Bundle.module, compatibleWith: nil), for: .normal)
         view.backgroundColor = .systemBackground
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)

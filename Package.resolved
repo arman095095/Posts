@@ -10,12 +10,57 @@
       }
     },
     {
+      "identity" : "accountroutemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/AccountRouteMap.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "6bf15f70d1ee79166322d551bb66f9f7543b5378"
+      }
+    },
+    {
+      "identity" : "alertmanager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/AlertManager.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "331065a3b442733c36acfd6a6b1a78d6e27bf9d5"
+      }
+    },
+    {
+      "identity" : "authorizationroutemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/AuthorizationRouteMap.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "671b1cc3f52e4f8ebf07bbb984932a9baa7817dc"
+      }
+    },
+    {
+      "identity" : "authorizedzoneroutemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/AuthorizedZoneRouteMap.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "84473ab8f4f0593595d02bf6dad6b12b0dc75bba"
+      }
+    },
+    {
       "identity" : "boringssl-swiftpm",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/boringssl-SwiftPM.git",
       "state" : {
         "revision" : "79db6516894a932d0ddaff3b05b9da1e4f6c4069",
         "version" : "0.9.0"
+      }
+    },
+    {
+      "identity" : "designsystem",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/DesignSystem.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "687d7c82e83da24c308e35244fb50637d5539217"
       }
     },
     {
@@ -91,12 +136,66 @@
       }
     },
     {
+      "identity" : "managers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/Managers.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "aab8babd0109720f5add99e2f34eb80643881510"
+      }
+    },
+    {
+      "identity" : "modelinterfaces",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/ModelInterfaces.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "301b392650aa5d8ae032483760eab95ee267d1ff"
+      }
+    },
+    {
+      "identity" : "module",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/Module.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "567093c53c8ceb0e79078cd476bce286b023f8cd"
+      }
+    },
+    {
       "identity" : "nanopb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/nanopb.git",
       "state" : {
         "revision" : "7ee9ef9f627d85cbe1b8c4f49a3ed26eed216c77",
         "version" : "2.30908.0"
+      }
+    },
+    {
+      "identity" : "networkservices",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/NetworkServices.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "c7a500ada9493d168a03e1e91eab85de12b41e5a"
+      }
+    },
+    {
+      "identity" : "postsroutemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/PostsRouteMap.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "726fe75504995a1f06f2ad2d2e824792044aacf8"
+      }
+    },
+    {
+      "identity" : "profileroutemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/ProfileRouteMap.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "e93fc916c694a8ce27852fd7be4687e903d856a7"
       }
     },
     {
@@ -115,6 +214,33 @@
       "state" : {
         "revision" : "2e63d0061da449ad0ed130768d05dceb1496de44",
         "version" : "5.12.5"
+      }
+    },
+    {
+      "identity" : "selection",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/Selection.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "54b3e4a58dda43bffc6aea6d449ef0065be3519c"
+      }
+    },
+    {
+      "identity" : "selectionroutemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/SelectionRouteMap.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "d4ec1ef092bac46be4e75357e3b6ac13966109c2"
+      }
+    },
+    {
+      "identity" : "settingsroutemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/SettingsRouteMap.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "360a66995b5c9219e352ce8248d61ce33a2b15a9"
       }
     },
     {
@@ -151,6 +277,24 @@
       "state" : {
         "revision" : "f10b6e9ebff440f985c43008f7c2d097639fcb81",
         "version" : "2.8.1"
+      }
+    },
+    {
+      "identity" : "userstoryfacade",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/UserStoryFacade.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "f88d248f59b5e753a57fe1e4529f1de4f3c48c6c"
+      }
+    },
+    {
+      "identity" : "utils",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/Utils.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "611eb753336c8440f054a949b34df285c73a49be"
       }
     }
   ],
