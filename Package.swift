@@ -12,7 +12,9 @@ private let dependencies: [Package.Dependency] = [
     .package(url: "https://github.com/arman095095/AlertManager.git", branch: "develop"),
     .package(url: "https://github.com/arman095095/Selection.git", branch: "develop"),
     .package(url: "https://github.com/arman095095/Utils.git", branch: "develop"),
-    .package(url: "https://github.com/nathantannar4/InputBarAccessoryView.git", .upToNextMajor(from: "5.2.0"))
+    .package(url: "https://github.com/nathantannar4/InputBarAccessoryView.git", .upToNextMajor(from: "5.2.0")),
+    .package(url: "https://github.com/arman095095/PostsRouteMap.git", branch: "develop"),
+    .package(url: "https://github.com/arman095095/UserStoryFacade.git", branch: "develop")
 ]
 
 let package = Package(
