@@ -3,7 +3,7 @@
 
 import PackageDescription
 
-private let remoteDependencies: [Package.Dependency] = [
+private let dependencies: [Package.Dependency] = [
     .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
     .package(url: "https://github.com/Swinject/Swinject.git", from: "2.8.0"),
     .package(url: "https://github.com/arman095095/Managers.git", branch: "develop"),
@@ -15,23 +15,6 @@ private let remoteDependencies: [Package.Dependency] = [
     .package(url: "https://github.com/nathantannar4/InputBarAccessoryView.git", .upToNextMajor(from: "5.2.0"))
 ]
 
-private let localDependencies: [Package.Dependency] = [
-    .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
-    .package(url: "https://github.com/Swinject/Swinject.git", from: "2.8.0"),
-    .package(url: "https://github.com/nathantannar4/InputBarAccessoryView.git", .upToNextMajor(from: "5.2.0")),
-    .package(path: "/Users/armancarhcan/Desktop/Workdir/Managers"),
-    .package(path: "/Users/armancarhcan/Desktop/Workdir/Module"),
-    .package(path: "/Users/armancarhcan/Desktop/Workdir/DesignSystem"),
-    .package(path: "/Users/armancarhcan/Desktop/Workdir/AlertManager"),
-    .package(path: "/Users/armancarhcan/Desktop/Workdir/Selection"),
-    .package(path: "/Users/armancarhcan/Desktop/Workdir/Utils"),
-    .package(path: "/Users/armancarhcan/Desktop/Workdir/PostsRouteMap"),
-    .package(path: "/Users/armancarhcan/Desktop/Workdir/UserStoryFacade")
-]
-
-let isDev = true
-private let dependencie = isDev ? localDependencies : remoteDependencies
-
 let package = Package(
     name: "Posts",
     platforms: [.iOS(.v13)],
@@ -41,7 +24,7 @@ let package = Package(
             name: "Posts",
             targets: ["Posts"]),
     ],
-    dependencies: dependencie,
+    dependencies: dependencies,
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
