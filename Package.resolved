@@ -60,7 +60,7 @@
       "location" : "https://github.com/arman095095/DesignSystem.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "687d7c82e83da24c308e35244fb50637d5539217"
+        "revision" : "ca7b5849ce5deb8eecee1a27c69148580f3396fb"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleDataTransport.git",
       "state" : {
-        "revision" : "15ccdfd25ac55b9239b82809531ff26605e7556e",
-        "version" : "9.1.2"
+        "revision" : "4073d04bf28943353b706f461d4ca2a89abb69c1",
+        "version" : "9.1.3"
       }
     },
     {
@@ -141,7 +141,7 @@
       "location" : "https://github.com/arman095095/Managers.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "aab8babd0109720f5add99e2f34eb80643881510"
+        "revision" : "f4938e6b38a451f3447b470c1feae3b659f11ca2"
       }
     },
     {
@@ -208,21 +208,12 @@
       }
     },
     {
-      "identity" : "sdwebimage",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SDWebImage/SDWebImage.git",
-      "state" : {
-        "revision" : "2e63d0061da449ad0ed130768d05dceb1496de44",
-        "version" : "5.12.5"
-      }
-    },
-    {
       "identity" : "selection",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/arman095095/Selection.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "54b3e4a58dda43bffc6aea6d449ef0065be3519c"
+        "revision" : "ecdbc08f9ae758fc2884c23a2af9286ad599f662"
       }
     },
     {
@@ -294,7 +285,7 @@
       "location" : "https://github.com/arman095095/Utils.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "611eb753336c8440f054a949b34df285c73a49be"
+        "revision" : "a35a998963d8bda712c434ffdbb5a7e573300d5e"
       }
     }
   ],

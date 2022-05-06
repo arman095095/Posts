@@ -4,7 +4,6 @@
 import PackageDescription
 
 private let dependencies: [Package.Dependency] = [
-    .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
     .package(url: "https://github.com/Swinject/Swinject.git", from: "2.8.0"),
     .package(url: "https://github.com/arman095095/Managers.git", branch: "develop"),
     .package(url: "https://github.com/arman095095/Module.git", branch: "develop"),
@@ -38,7 +37,6 @@ let package = Package(
                            .product(name: "Selection", package: "Selection"),
                            .product(name: "Utils", package: "Utils"),
                            .product(name: "Swinject", package: "Swinject"),
-                           .product(name: "SDWebImage", package: "SDWebImage"),
                            .product(name: "InputBarAccessoryView", package: "InputBarAccessoryView"),
                            .product(name: "PostsRouteMap", package: "PostsRouteMap"),
                            .product(name: "UserStoryFacade", package: "UserStoryFacade")]),

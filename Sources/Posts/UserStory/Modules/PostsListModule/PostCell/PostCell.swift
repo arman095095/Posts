@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import SDWebImage
 import DesignSystem
 
 protocol PostCellOutput: AnyObject {
@@ -36,8 +35,8 @@ final class PostCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let personImage: UIImageView = {
-        var view = UIImageView()
+    private let personImage: ImageView = {
+        var view = ImageView()
         view.layer.cornerRadius = PostCellConstants.userImageHeight/2
         view.isUserInteractionEnabled = true
         view.clipsToBounds = true
@@ -67,8 +66,8 @@ final class PostCell: UITableViewCell {
     private var bottonViewTopConstraint: NSLayoutConstraint!
     
     //dynamic Views withoutConstraints
-    private let postsImageView: UIImageView = {
-        var view = UIImageView()
+    private let postsImageView: ImageView = {
+        var view = ImageView()
         view.contentMode = .scaleToFill
         return view
     }()
@@ -83,7 +82,7 @@ final class PostCell: UITableViewCell {
         view.dataDetectorTypes = UIDataDetectorTypes.all
         return view
     }()
-    private let fullTextButton : UIButton = {
+    private let fullTextButton: UIButton = {
         var view = UIButton(type: UIButton.ButtonType.system)
         view.titleLabel?.font = PostCellConstants.buttonFont
         view.setTitle(PostCellConstants.buttonTitle, for: .normal)
@@ -146,12 +145,12 @@ final class PostCell: UITableViewCell {
     
     func config(model: PostCellViewModelProtocol) {
         self.model = model
-        personImage.sd_setImage(with: model.ownerImageUrl)
+        personImage.set(imageURL: model.ownerImageUrl)
         nameLabel.text = model.userName
         onlineImageView.isHidden = !model.onlineIconShow
         dateLabel.text = model.date
         postTextView.text = model.textContent
-        postsImageView.sd_setImage(with: model.urlImage)
+        postsImageView.set(imageURL: model.urlImage)
         postTextView.frame = model.textContentFrame
         postsImageView.frame = model.postImageFrame
         fullTextButton.frame = model.buttonFrame
