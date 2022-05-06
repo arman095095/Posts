@@ -60,7 +60,7 @@
       "location" : "https://github.com/arman095095/DesignSystem.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "ca7b5849ce5deb8eecee1a27c69148580f3396fb"
+        "revision" : "3a9693371be522dfe41850ec6088fdf604a93192"
       }
     },
     {
@@ -141,7 +141,7 @@
       "location" : "https://github.com/arman095095/Managers.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "f4938e6b38a451f3447b470c1feae3b659f11ca2"
+        "revision" : "4b3262dff7be92f33ff4a5c531c997d6c3533de8"
       }
     },
     {
@@ -150,7 +150,7 @@
       "location" : "https://github.com/arman095095/ModelInterfaces.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "301b392650aa5d8ae032483760eab95ee267d1ff"
+        "revision" : "2812afc016a1afa7ec46356b5bf9b7e22dbb5f30"
       }
     },
     {
@@ -177,7 +177,7 @@
       "location" : "https://github.com/arman095095/NetworkServices.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "c7a500ada9493d168a03e1e91eab85de12b41e5a"
+        "revision" : "f8ab65fd6c494ee4035ae0c4add0db54ab53487a"
       }
     },
     {
@@ -195,7 +195,7 @@
       "location" : "https://github.com/arman095095/ProfileRouteMap.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "e93fc916c694a8ce27852fd7be4687e903d856a7"
+        "revision" : "854a3ae134ecad3bfb7279cafff4e07030f321d6"
       }
     },
     {
