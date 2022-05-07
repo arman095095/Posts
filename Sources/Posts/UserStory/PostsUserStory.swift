@@ -53,6 +53,7 @@ extension PostsUserStory: RouteMapPrivate {
         guard let module = safeResolver.resolve(UserStoryFacadeProtocol.self)?.profileUserStory?.someAccountModule(profile: profile) else {
             fatalError(ErrorMessage.dependency.localizedDescription)
         }
+        module.output = output
         return module
     }
     
