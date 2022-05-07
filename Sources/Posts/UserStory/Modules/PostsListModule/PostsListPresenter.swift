@@ -11,6 +11,7 @@ import DesignSystem
 import Managers
 import AlertManager
 import ModelInterfaces
+import ProfileRouteMap
 
 protocol PostsListModuleOutput: AnyObject {
     
@@ -117,7 +118,7 @@ extension PostsListPresenter: PostsListViewOutput {
         guard case .allPosts = context else { return }
         let model = post(at: indexPath)
         guard model.owner.id != accountID else { return }
-        router.openUserProfile(model.owner)
+        router.openUserProfile(model.owner, output: self)
     }
     
     var postsTitleHeight: CGFloat {
@@ -296,6 +297,24 @@ extension PostsListPresenter: PostsListInteractorOutput {
 }
 
 extension PostsListPresenter: PostsListModuleInput { }
+
+extension PostsListPresenter: ProfileModuleOutput {
+    func deniedProfile() {
+        router.dismissProfileModule()
+    }
+    
+    func ignoredProfile() {
+        router.dismissProfileModule()
+    }
+    
+    func acceptedProfile() {
+        router.dismissProfileModule()
+    }
+    
+    func requestedProfile() {
+        router.dismissProfileModule()
+    }
+}
 
 private extension PostsListPresenter {
     struct Constants {

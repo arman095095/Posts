@@ -14,5 +14,6 @@ import ModelInterfaces
 protocol RouteMapPrivate: AnyObject {
     func postsListModule(context: InputFlowContext) -> PostsListModule
     func postCreateModule(output: PostCreateModuleOutput) -> PostCreateModule
-    func profileModule(profile: ProfileModelProtocol) -> ProfileModule
+    func profileModule(profile: ProfileModelProtocol,
+                       output: ProfileModuleOutput) -> ProfileModule
 }

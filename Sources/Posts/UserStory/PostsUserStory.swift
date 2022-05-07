@@ -47,7 +47,8 @@ extension PostsUserStory: PostsRouteMap {
 
 extension PostsUserStory: RouteMapPrivate {
     
-    func profileModule(profile: ProfileModelProtocol) -> ProfileModule {
+    func profileModule(profile: ProfileModelProtocol,
+                       output: ProfileModuleOutput) -> ProfileModule {
         let safeResolver = container.synchronize()
         guard let module = safeResolver.resolve(UserStoryFacadeProtocol.self)?.profileUserStory?.someAccountModule(profile: profile) else {
             fatalError(ErrorMessage.dependency.localizedDescription)
