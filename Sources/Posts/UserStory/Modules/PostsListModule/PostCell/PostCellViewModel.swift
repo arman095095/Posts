@@ -73,11 +73,11 @@ extension PostCellViewModel: PostCellViewModelProtocol,
     }
 
     var userName: String {
-        owner.removed ? Constants.removedUserName : owner.userName
+        owner.removed ? RemovedProfileConstants.name.rawValue : owner.userName
     }
     
     var ownerImageUrl: URL? {
-        owner.removed ? URL(string: Constants.removedUserImageURL) : URL(string: owner.imageUrl)
+        owner.removed ? URL(string: RemovedProfileConstants.imageURL.rawValue) : URL(string: owner.imageUrl)
     }
     
     var onlineIconShow: Bool {
@@ -117,19 +117,11 @@ extension PostCellViewModel: PostCellViewModelProtocol,
 }
 
 extension PostCellViewModel: Hashable {
-    
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     
     static func == (lhs: PostCellViewModel, rhs: PostCellViewModel) -> Bool {
         lhs.id == rhs.id
-    }
-}
-
-private extension PostCellViewModel {
-    struct Constants {
-        static let removedUserName = "DELETED"
-        static let removedUserImageURL = "https://miro.medium.com/max/1400/1*Bvkn3ol6fCOuzAM42B2Afw.jpeg"
     }
 }
