@@ -55,12 +55,21 @@
       }
     },
     {
+      "identity" : "chatsroutemap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/ChatsRouteMap.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "77b218cef7e9eab46dfd5ab3f285eeec76fa4899"
+      }
+    },
+    {
       "identity" : "designsystem",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/arman095095/DesignSystem.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "1209b4412d237d6a61580124079c66ad724ba0da"
+        "revision" : "735834117cce873cd8a36587a318a7b34136d449"
       }
     },
     {
@@ -136,12 +145,12 @@
       }
     },
     {
-      "identity" : "managers",
+      "identity" : "messangerroutemap",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/arman095095/Managers.git",
+      "location" : "https://github.com/arman095095/MessangerRouteMap.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "916300feb4c6730088e6b268beb4cc6025ac8638"
+        "revision" : "45122aeb1b4de6245a0e68509c8ca9bce9cbfaa1"
       }
     },
     {
@@ -150,7 +159,7 @@
       "location" : "https://github.com/arman095095/ModelInterfaces.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "f051f408f976bf383a9b5b44bcadbb9e8c519577"
+        "revision" : "26ce028611a426872822e144f362cc25cafc6c67"
       }
     },
     {
@@ -177,7 +186,7 @@
       "location" : "https://github.com/arman095095/NetworkServices.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "671c8df874f8fcb13eefcfadc75f2de340a83c23"
+        "revision" : "e9854c9dce313618c2745a57fbbe5296fdaa1c0f"
       }
     },
     {
@@ -223,6 +232,15 @@
       "state" : {
         "branch" : "develop",
         "revision" : "d4ec1ef092bac46be4e75357e3b6ac13966109c2"
+      }
+    },
+    {
+      "identity" : "services",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/Services.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "f58f04528b04afb3d29e990916c6744ffadf2afd"
       }
     },
     {
@@ -276,7 +294,7 @@
       "location" : "https://github.com/arman095095/UserStoryFacade.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "f88d248f59b5e753a57fe1e4529f1de4f3c48c6c"
+        "revision" : "a4ad8b8eb51244d0bcab58e456dcefeff2329a0d"
       }
     },
     {
