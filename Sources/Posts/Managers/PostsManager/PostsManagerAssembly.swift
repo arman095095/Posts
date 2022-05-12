@@ -11,11 +11,8 @@ import NetworkServices
 import Managers
 import Services
 
-public final class PostsManagerAssembly: Assembly {
-    
-    public init() { }
-    
-    public func assemble(container: Container) {
+final class PostsManagerAssembly: Assembly {
+    func assemble(container: Container) {
         container.register(PostsManagerProtocol.self) { r in
             guard let remoteStorage = r.resolve(RemoteStorageServiceProtocol.self),
                   let quickAccessManager = r.resolve(QuickAccessManagerProtocol.self),

@@ -145,6 +145,15 @@
       }
     },
     {
+      "identity" : "managers",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arman095095/Managers.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "5f2e7fed5df2890f41ac518dd46bec51cc02e063"
+      }
+    },
+    {
       "identity" : "messangerroutemap",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/arman095095/MessangerRouteMap.git",

@@ -11,7 +11,7 @@ import UIKit
 import ModelInterfaces
 import Services
 
-public protocol PostsManagerProtocol: AnyObject {
+protocol PostsManagerProtocol: AnyObject {
     func create(image: UIImage?,
                 imageSize: CGSize?,
                 content: String,
@@ -29,7 +29,7 @@ public protocol PostsManagerProtocol: AnyObject {
     func unlike(postID: String, ownerID: String)
 }
 
-public final class PostsManager {
+final class PostsManager {
     
     private let postsService: PostsServiceProtocol
     private let remoteStorage: RemoteStorageServiceProtocol
@@ -49,14 +49,14 @@ public final class PostsManager {
 
 extension PostsManager: PostsManagerProtocol {
     
-    public enum Limits: Int {
+    enum Limits: Int {
         case posts = 20
     }
     
-    public func create(image: UIImage?,
-                       imageSize: CGSize?,
-                       content: String,
-                       completion: @escaping (Result<Void, Error>) -> Void) {
+    func create(image: UIImage?,
+                imageSize: CGSize?,
+                content: String,
+                completion: @escaping (Result<Void, Error>) -> Void) {
         if let data = image?.jpegData(compressionQuality: 0.4),
            let size = imageSize {
             remoteStorage.uploadPost(image: data) { [weak self] result in
@@ -98,7 +98,7 @@ extension PostsManager: PostsManagerProtocol {
         }
     }
     
-    public func getAllFirstPosts(completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
+    func getAllFirstPosts(completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
         postsService.getAllFirstPosts(count: Limits.posts.rawValue) { [weak self] result in
             guard let self = self else { return }
             let group = DispatchGroup()
@@ -125,7 +125,7 @@ extension PostsManager: PostsManagerProtocol {
         }
     }
     
-    public func getAllNextPosts(completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
+    func getAllNextPosts(completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
         postsService.getAllNextPosts(count: Limits.posts.rawValue) { [weak self] result in
             guard let self = self else { return }
             let group = DispatchGroup()
@@ -152,7 +152,7 @@ extension PostsManager: PostsManagerProtocol {
         }
     }
     
-    public func getFirstPosts(for userID: String, completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
+    func getFirstPosts(for userID: String, completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
         self.profilesService.getProfileInfo(userID: userID) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -197,7 +197,7 @@ extension PostsManager: PostsManagerProtocol {
         }
     }
     
-    public func getNextPosts(for userID: String, completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
+    func getNextPosts(for userID: String, completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
         self.profilesService.getProfileInfo(userID: userID) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -242,23 +242,23 @@ extension PostsManager: PostsManagerProtocol {
         }
     }
     
-    public func getCurrentUserFirstPosts(completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
+    func getCurrentUserFirstPosts(completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
         getFirstPosts(for: accountID, completion: completion)
     }
     
-    public func getCurrentUserNextPosts(completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
+    func getCurrentUserNextPosts(completion: @escaping (Result<[PostModelProtocol], Error>) -> Void) {
         getNextPosts(for: accountID, completion: completion)
     }
     
-    public func removePost(postID: String) {
+    func removePost(postID: String) {
         postsService.deletePost(accountID: accountID, postID: postID)
     }
     
-    public func like(postID: String, ownerID: String) {
+    func like(postID: String, ownerID: String) {
         postsService.likePost(accountID: accountID, postID: postID, ownerID: ownerID)
     }
     
-    public func unlike(postID: String, ownerID: String) {
+    func unlike(postID: String, ownerID: String) {
         postsService.unlikePost(accountID: accountID, postID: postID, ownerID: ownerID)
     }
     
@@ -295,6 +295,6 @@ private extension PostsManager {
             completion(.success(posts))
         }
     }
-
+    
 }
 
