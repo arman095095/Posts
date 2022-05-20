@@ -33,13 +33,13 @@ final class PostsManager {
     
     private let postsService: PostsNetworkServiceProtocol
     private let remoteStorage: PostsRemoteStorageServiceProtocol
-    private let profilesService: ProfilesNetworkServiceProtocol
+    private let profilesService: ProfileInfoNetworkServiceProtocol
     private let accountID: String
     
     init(accountID: String,
          postsService: PostsNetworkServiceProtocol,
          remoteStorage: PostsRemoteStorageServiceProtocol,
-         profilesService: ProfilesNetworkServiceProtocol) {
+         profilesService: ProfileInfoNetworkServiceProtocol) {
         self.accountID = accountID
         self.postsService = postsService
         self.remoteStorage = remoteStorage

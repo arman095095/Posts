@@ -35,11 +35,11 @@ final class PostsNetworkService {
     private var lastPostUser: DocumentSnapshot?
     
     private var usersRef: CollectionReference {
-        return networkServiceRef.collection(URLComponents.Paths.users.rawValue)
+        return networkServiceRef.collection(PostsURLComponents.Paths.users.rawValue)
     }
     
     private var postsRef: CollectionReference {
-        return networkServiceRef.collection(URLComponents.Paths.posts.rawValue)
+        return networkServiceRef.collection(PostsURLComponents.Paths.posts.rawValue)
     }
     
     init(networkService: Firestore) {
@@ -64,7 +64,7 @@ extension PostsNetworkService: PostsNetworkServiceProtocol {
                 completion(.failure(error))
                 return
             }
-            self.usersRef.document(accountID).collection(URLComponents.Paths.posts.rawValue).document(post.id).setData(postDict) { (error) in
+            self.usersRef.document(accountID).collection(PostsURLComponents.Paths.posts.rawValue).document(post.id).setData(postDict) { (error) in
                 if let error = error {
                     completion(.failure(error))
                     return
@@ -79,7 +79,7 @@ extension PostsNetworkService: PostsNetworkServiceProtocol {
             completion(.failure(ConnectionError.noInternet))
         }
         var posts = [PostNetworkModelProtocol]()
-        postsRef.order(by: URLComponents.Parameters.date.rawValue, descending: true).limit(to: count).getDocuments() { [weak self] (querySnapshot, error) in
+        postsRef.order(by: PostsURLComponents.Parameters.date.rawValue, descending: true).limit(to: count).getDocuments() { [weak self] (querySnapshot, error) in
             guard let self = self else { return }
             if let error = error {
                 completion(.failure(error))
@@ -108,7 +108,7 @@ extension PostsNetworkService: PostsNetworkServiceProtocol {
         }
         guard let lastDocument = lastPostOfAll else { return }
         var posts = [PostNetworkModelProtocol]()
-        postsRef.order(by: URLComponents.Parameters.date.rawValue, descending: true).start(afterDocument: lastDocument).limit(to: count).getDocuments() { [weak self] (querySnapshot, error) in
+        postsRef.order(by: PostsURLComponents.Parameters.date.rawValue, descending: true).start(afterDocument: lastDocument).limit(to: count).getDocuments() { [weak self] (querySnapshot, error) in
             guard let self = self else { return }
             if let error = error {
                 completion(.failure(error))
@@ -136,7 +136,7 @@ extension PostsNetworkService: PostsNetworkServiceProtocol {
             completion(.failure(ConnectionError.noInternet))
         }
         var posts = [PostNetworkModelProtocol]()
-        usersRef.document(userID).collection(URLComponents.Paths.posts.rawValue).order(by: URLComponents.Parameters.date.rawValue, descending: true).limit(to: count).getDocuments() { (querySnapshot, error) in
+        usersRef.document(userID).collection(PostsURLComponents.Paths.posts.rawValue).order(by: PostsURLComponents.Parameters.date.rawValue, descending: true).limit(to: count).getDocuments() { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -165,7 +165,7 @@ extension PostsNetworkService: PostsNetworkServiceProtocol {
         }
         guard let lastDocument = lastPostUser else { return }
         var posts = [PostNetworkModelProtocol]()
-        usersRef.document(userID).collection(URLComponents.Paths.posts.rawValue).order(by: URLComponents.Parameters.date.rawValue, descending: true).start(afterDocument: lastDocument).limit(to: count).getDocuments() { (querySnapshot, error) in
+        usersRef.document(userID).collection(PostsURLComponents.Paths.posts.rawValue).order(by: PostsURLComponents.Parameters.date.rawValue, descending: true).start(afterDocument: lastDocument).limit(to: count).getDocuments() { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -188,29 +188,29 @@ extension PostsNetworkService: PostsNetworkServiceProtocol {
     }
     
     public func deletePost(accountID: String, postID: String) {
-        postsRef.document(postID).collection(URLComponents.Paths.likers.rawValue).getDocuments { [weak self] (querySnapshot, error) in
+        postsRef.document(postID).collection(PostsURLComponents.Paths.likers.rawValue).getDocuments { [weak self] (querySnapshot, error) in
             guard let self = self else { return }
             if let _ = error {
                 return
             }
             guard let querySnapshot = querySnapshot else { return }
             querySnapshot.documents.forEach {
-                self.postsRef.document(postID).collection(URLComponents.Paths.likers.rawValue).document($0.documentID).delete()
+                self.postsRef.document(postID).collection(PostsURLComponents.Paths.likers.rawValue).document($0.documentID).delete()
             }
             self.postsRef.document(postID).delete { (error) in
                 if let _ = error {
                     return
                 }
-                self.usersRef.document(accountID).collection(URLComponents.Paths.posts.rawValue).document(postID).collection(URLComponents.Paths.likers.rawValue).getDocuments { [weak self] (querySnapshot, error) in
+                self.usersRef.document(accountID).collection(PostsURLComponents.Paths.posts.rawValue).document(postID).collection(PostsURLComponents.Paths.likers.rawValue).getDocuments { [weak self] (querySnapshot, error) in
                     guard let self = self else { return }
                     if let _ = error {
                         return
                     }
                     guard let querySnapshot = querySnapshot else { return }
                     querySnapshot.documents.forEach {
-                        self.usersRef.document(accountID).collection(URLComponents.Paths.posts.rawValue).document(postID).collection(URLComponents.Paths.likers.rawValue).document($0.documentID).delete()
+                        self.usersRef.document(accountID).collection(PostsURLComponents.Paths.posts.rawValue).document(postID).collection(PostsURLComponents.Paths.likers.rawValue).document($0.documentID).delete()
                     }
-                    self.usersRef.document(accountID).collection(URLComponents.Paths.posts.rawValue).document(postID).delete { (error) in
+                    self.usersRef.document(accountID).collection(PostsURLComponents.Paths.posts.rawValue).document(postID).delete { (error) in
                         if let _ = error {
                             return
                         }
@@ -223,19 +223,19 @@ extension PostsNetworkService: PostsNetworkServiceProtocol {
     public func likePost(accountID: String,
                          postID: String,
                          ownerID: String) {
-        postsRef.document(postID).collection(URLComponents.Paths.likers.rawValue).document(accountID).setData([URLComponents.Parameters.id.rawValue: accountID])
-        usersRef.document(ownerID).collection(URLComponents.Paths.posts.rawValue).document(postID).collection(URLComponents.Paths.likers.rawValue).document(accountID).setData([URLComponents.Parameters.id.rawValue: accountID])
+        postsRef.document(postID).collection(PostsURLComponents.Paths.likers.rawValue).document(accountID).setData([PostsURLComponents.Parameters.id.rawValue: accountID])
+        usersRef.document(ownerID).collection(PostsURLComponents.Paths.posts.rawValue).document(postID).collection(PostsURLComponents.Paths.likers.rawValue).document(accountID).setData([PostsURLComponents.Parameters.id.rawValue: accountID])
     }
     
     public func unlikePost(accountID: String,
                            postID: String,
                            ownerID: String) {
-        postsRef.document(postID).collection(URLComponents.Paths.likers.rawValue).document(accountID).delete()
-        usersRef.document(ownerID).collection(URLComponents.Paths.posts.rawValue).document(postID).collection(URLComponents.Paths.likers.rawValue).document(accountID).delete()
+        postsRef.document(postID).collection(PostsURLComponents.Paths.likers.rawValue).document(accountID).delete()
+        usersRef.document(ownerID).collection(PostsURLComponents.Paths.posts.rawValue).document(postID).collection(PostsURLComponents.Paths.likers.rawValue).document(accountID).delete()
     }
     
     public func getPostLikersIDs(postID: String, completion: @escaping (Result<[String], Error>) -> ()) {
-        postsRef.document(postID).collection(URLComponents.Paths.likers.rawValue).getDocuments { (querySnapshot, error) in
+        postsRef.document(postID).collection(PostsURLComponents.Paths.likers.rawValue).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -246,7 +246,7 @@ extension PostsNetworkService: PostsNetworkServiceProtocol {
             }
             var ids = [String]()
             querySnapshot.documents.forEach {
-                if let id = $0.data()[URLComponents.Parameters.id.rawValue] as? String {
+                if let id = $0.data()[PostsURLComponents.Parameters.id.rawValue] as? String {
                     ids.append(id)
                 }
             }

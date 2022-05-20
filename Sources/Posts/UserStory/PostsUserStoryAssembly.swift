@@ -16,6 +16,7 @@ public final class PostsUserStoryAssembly: Assembly {
     public init() { }
 
     public func assemble(container: Container) {
+        ProfileInfoNetworkServiceAssembly().assemble(container: container)
         PostsNetworkServiceAssembly().assemble(container: container)
         PostsRemoteStorageServiceAssembly().assemble(container: container)
         PostsManagerAssembly().assemble(container: container)
