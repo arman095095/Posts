@@ -14,10 +14,10 @@ import Services
 final class PostsManagerAssembly: Assembly {
     func assemble(container: Container) {
         container.register(PostsManagerProtocol.self) { r in
-            guard let remoteStorage = r.resolve(RemoteStorageServiceProtocol.self),
+            guard let remoteStorage = r.resolve(PostsRemoteStorageServiceProtocol.self),
                   let quickAccessManager = r.resolve(QuickAccessManagerProtocol.self),
                   let profileService = r.resolve(ProfilesServiceProtocol.self),
-                  let postsServices = r.resolve(PostsServiceProtocol.self),
+                  let postsServices = r.resolve(PostsNetworkServiceProtocol.self),
                   let accountID = quickAccessManager.userID else { fatalError(ErrorMessage.dependency.localizedDescription)
             }
             return PostsManager(accountID: accountID,

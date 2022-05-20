@@ -31,14 +31,14 @@ protocol PostsManagerProtocol: AnyObject {
 
 final class PostsManager {
     
-    private let postsService: PostsServiceProtocol
-    private let remoteStorage: RemoteStorageServiceProtocol
+    private let postsService: PostsNetworkServiceProtocol
+    private let remoteStorage: PostsRemoteStorageServiceProtocol
     private let profilesService: ProfilesServiceProtocol
     private let accountID: String
     
     init(accountID: String,
-         postsService: PostsServiceProtocol,
-         remoteStorage: RemoteStorageServiceProtocol,
+         postsService: PostsNetworkServiceProtocol,
+         remoteStorage: PostsRemoteStorageServiceProtocol,
          profilesService: ProfilesServiceProtocol) {
         self.accountID = accountID
         self.postsService = postsService

@@ -16,6 +16,8 @@ public final class PostsUserStoryAssembly: Assembly {
     public init() { }
 
     public func assemble(container: Container) {
+        PostsNetworkServiceAssembly().assemble(container: container)
+        PostsRemoteStorageServiceAssembly().assemble(container: container)
         PostsManagerAssembly().assemble(container: container)
         container.register(PostsRouteMap.self) { r in
             PostsUserStory(container: container)
