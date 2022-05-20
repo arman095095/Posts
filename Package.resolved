@@ -113,8 +113,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/grpc/grpc-ios.git",
       "state" : {
-        "revision" : "abd2d5a4347efa0454606a788678a5d8ec223738",
-        "version" : "1.44.0-grpc"
+        "revision" : "2af4f6e9c2b18beae228f50b1198c641be859d2b",
+        "version" : "1.44.2-grpc"
       }
     },
     {
@@ -150,7 +150,7 @@
       "location" : "https://github.com/arman095095/Managers.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "d0cab8393223edddbfbf4e3f2dd8b67690c71824"
+        "revision" : "4389a54754e683114756f2b8ff3d44bc712a3995"
       }
     },
     {
@@ -159,7 +159,7 @@
       "location" : "https://github.com/arman095095/ModelInterfaces.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "619d04b58fb7d4835288bc067b2a2b8a5f78caf8"
+        "revision" : "6d70c5ac74fb6d2c18fb8ec05050629d1c55efb6"
       }
     },
     {
@@ -186,7 +186,7 @@
       "location" : "https://github.com/arman095095/NetworkServices.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "c2e4b65a5c6961c1013b87381c4edcc362486474"
+        "revision" : "d160339a1a1e38895f2daff8a35b1f17004d52d2"
       }
     },
     {
@@ -240,7 +240,7 @@
       "location" : "https://github.com/arman095095/Services.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "0d2002532d693a7e387261f32829e9d7656a9bdd"
+        "revision" : "08fc87e651379cf854062330eb46e5d80c6f0d1b"
       }
     },
     {
@@ -303,7 +303,7 @@
       "location" : "https://github.com/arman095095/Utils.git",
       "state" : {
         "branch" : "develop",
-        "revision" : "0c1172bdde44965aed032461dedb5cdb52b5cc51"
+        "revision" : "51bfa07a6ba52a9552440c5e5ee71c7c79781822"
       }
     }
   ],
