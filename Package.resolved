@@ -131,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nathantannar4/InputBarAccessoryView.git",
       "state" : {
-        "revision" : "2843b4454cfb6de5b4d1e5939fef2dd6257b69ee",
-        "version" : "5.5.0"
+        "revision" : "e5da8c5e3c6ff2740ec2b721dd71e2cf24053001",
+        "version" : "6.1.0"
       }
     },
     {
