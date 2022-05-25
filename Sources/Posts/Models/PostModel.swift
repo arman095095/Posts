@@ -9,6 +9,7 @@ import UIKit
 import NetworkServices
 import ModelInterfaces
 import Services
+import PostsRouteMap
 
 public final class PostModel: PostModelProtocol {
     public var imageHeight: CGFloat?

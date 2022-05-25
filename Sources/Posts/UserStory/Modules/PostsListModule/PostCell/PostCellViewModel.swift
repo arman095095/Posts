@@ -10,6 +10,7 @@ import Managers
 import UIKit
 import Utils
 import ModelInterfaces
+import PostsRouteMap
 
 protocol PostCellViewModelProtocol: AnyObject {
     var date: String { get }

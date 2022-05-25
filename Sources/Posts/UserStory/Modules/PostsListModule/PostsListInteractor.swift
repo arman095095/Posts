@@ -8,7 +8,7 @@
 
 import UIKit
 import Managers
-import ModelInterfaces
+import PostsRouteMap
 
 protocol PostsListInteractorInput: AnyObject {
     func requestFirstPosts(userID: String)

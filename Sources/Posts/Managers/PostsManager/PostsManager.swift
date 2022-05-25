@@ -9,6 +9,7 @@ import Foundation
 import NetworkServices
 import UIKit
 import ModelInterfaces
+import PostsRouteMap
 import Services
 
 protocol PostsManagerProtocol: AnyObject {

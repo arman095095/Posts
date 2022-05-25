@@ -10,7 +10,7 @@ import UIKit
 import DesignSystem
 import Managers
 import AlertManager
-import ModelInterfaces
+import PostsRouteMap
 import ProfileRouteMap
 
 protocol PostsListModuleOutput: AnyObject {
