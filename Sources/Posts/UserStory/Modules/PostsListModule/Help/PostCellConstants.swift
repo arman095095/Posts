@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DesignSystem
 
 struct PostCellConstants {
     static let zero: CGFloat  = 0
